@@ -4,29 +4,40 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 10px;
-  background: #ffffff;
-  border: 2px solid #000000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 12px 20px;
+  background:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(250, 252, 255, 0.85) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
   z-index: 100;
-  animation: header-slide-in 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: header-slide-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex-shrink: 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 @keyframes header-slide-in {
   from {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(-20px) scale(0.95);
+    filter: blur(10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
 }
 
 .header-section {
   display: flex;
-  gap: 4px;
+  gap: 8px;
   align-items: center;
   flex: 1;
 }
@@ -37,7 +48,7 @@
 
 .header-stats {
   display: flex;
-  gap: 6px;
+  gap: 12px;
   align-items: center;
   justify-content: center;
   flex: 1;
@@ -47,101 +58,222 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 5px;
-  background: #f5f5f5;
-  padding: 3px 8px;
-  border: 1px solid #000000;
-  min-width: 60px;
+  gap: 8px;
+  background:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(250, 252, 255, 0.5) 100%);
+  padding: 8px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  min-width: 80px;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-display:hover {
+  background:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(250, 252, 255, 0.7) 100%);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transform: translateY(-1px);
 }
 
 .stat-label {
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.5px;
   color: #666666;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
 }
 
 .stat-value {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
-  font-family: 'SF Mono', 'Monaco', monospace;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
   color: #000000;
+  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .reset-button {
-  width: 32px;
-  height: 32px;
-  border: 2px solid #000000;
-  border-radius: 0;
-  background: #ffffff;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(245, 248, 252, 0.85) 100%);
   cursor: pointer;
-  transition: all 0.08s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .reset-button:hover {
-  background: #000000;
+  background:
+    linear-gradient(135deg,
+      rgba(240, 245, 255, 1) 0%,
+      rgba(235, 242, 252, 1) 100%);
+  box-shadow:
+    0 4px 12px rgba(100, 150, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px) scale(1.05);
+  border-color: rgba(100, 150, 255, 0.2);
 }
 
 .reset-button:active {
-  transform: scale(0.95);
+  transform: translateY(0) scale(0.98);
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.08),
+    inset 0 2px 4px rgba(100, 150, 255, 0.1);
 }
 
 .reset-emoji {
-  font-size: 16px;
-  transition: transform 0.08s ease;
+  font-size: 20px;
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .reset-button:hover .reset-emoji {
-  transform: scale(1.1);
+  transform: scale(1.2) rotate(10deg);
 }
 
 .icon-button {
-  width: 28px;
-  height: 28px;
-  border: 1px solid #000000;
-  border-radius: 0;
-  background: #f5f5f5;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(250, 252, 255, 0.5) 100%);
   cursor: pointer;
-  font-size: 12px;
-  transition: all 0.08s ease;
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .icon-button:hover {
-  background: #000000;
-  border-color: #000000;
+  background:
+    linear-gradient(135deg,
+      rgba(240, 245, 255, 1) 0%,
+      rgba(235, 242, 252, 1) 100%);
+  border-color: rgba(100, 150, 255, 0.2);
+  box-shadow:
+    0 4px 12px rgba(100, 150, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transform: translateY(-1px) scale(1.05);
 }
 
 .icon-button:active {
-  transform: scale(0.95);
+  transform: translateY(0) scale(0.98);
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.06),
+    inset 0 2px 4px rgba(100, 150, 255, 0.1);
 }
 
 .status-indicator {
-  background: #f5f5f5;
-  padding: 3px 8px;
-  border: 1px solid #000000;
+  background:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(250, 252, 255, 0.5) 100%);
+  padding: 6px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .status-text {
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 600;
-  color: #000000;
+  color: #666666;
   text-transform: uppercase;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.5px;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
   .header {
-    padding: 4px 8px;
-    flex-wrap: wrap;
-    gap: 4px;
+    padding: 10px 16px;
+    border-radius: 14px;
+  }
+
+  .header-section {
+    gap: 6px;
+  }
+
+  .header-stats {
+    gap: 10px;
+  }
+
+  .stat-display {
+    min-width: 70px;
+    padding: 6px 12px;
+    border-radius: 10px;
+  }
+
+  .stat-label {
+    font-size: 9px;
+  }
+
+  .stat-value {
+    font-size: 14px;
+  }
+
+  .reset-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+
+  .reset-emoji {
+    font-size: 18px;
+  }
+
+  .icon-button {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .status-indicator {
+    padding: 5px 10px;
+    border-radius: 8px;
+  }
+
+  .status-text {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 8px 12px;
+    border-radius: 12px;
+    gap: 6px;
   }
 
   .header-section {
@@ -149,12 +281,17 @@
   }
 
   .header-stats {
-    gap: 6px;
+    gap: 8px;
   }
 
   .stat-display {
-    min-width: 55px;
-    padding: 3px 8px;
+    min-width: 60px;
+    padding: 5px 10px;
+    border-radius: 8px;
+  }
+
+  .stat-label {
+    font-size: 8px;
   }
 
   .stat-value {
@@ -162,8 +299,9 @@
   }
 
   .reset-button {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
   }
 
   .reset-emoji {
@@ -171,8 +309,18 @@
   }
 
   .icon-button {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     font-size: 12px;
+    border-radius: 7px;
+  }
+
+  .status-indicator {
+    padding: 4px 8px;
+    border-radius: 7px;
+  }
+
+  .status-text {
+    font-size: 8px;
   }
 }

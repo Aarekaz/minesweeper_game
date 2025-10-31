@@ -1,154 +1,280 @@
 .cell {
   width: 100%;
   height: 100%;
-  min-width: 26px;
-  min-height: 26px;
   border: none;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
-  font-family: 'SF Mono', 'Monaco', monospace;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.06s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.cell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .cell-hidden {
-  background: linear-gradient(145deg, #ececec, #e0e0e0);
-  border: 1px solid #d0d0d0;
-  box-shadow: inset 0 0.5px 1px rgba(255, 255, 255, 0.5);
+  background:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(245, 248, 252, 0.9) 100%);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.cell-hidden::before {
+  background: linear-gradient(
+    135deg,
+    rgba(100, 150, 255, 0.05) 0%,
+    transparent 50%,
+    rgba(255, 100, 150, 0.05) 100%
+  );
+  opacity: 0;
 }
 
 .cell-hidden:hover {
-  background: linear-gradient(145deg, #dadada, #cccccc);
-  border-color: #999999;
+  background:
+    linear-gradient(135deg,
+      rgba(240, 245, 255, 1) 0%,
+      rgba(235, 242, 252, 1) 100%);
+  box-shadow:
+    0 4px 12px rgba(100, 150, 255, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+  border-color: rgba(100, 150, 255, 0.2);
+}
+
+.cell-hidden:hover::before {
+  opacity: 1;
 }
 
 .cell-hidden:active {
-  background: #c8c8c8;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  background:
+    linear-gradient(135deg,
+      rgba(230, 240, 255, 1) 0%,
+      rgba(225, 235, 250, 1) 100%);
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.08),
+    inset 0 2px 4px rgba(100, 150, 255, 0.1);
+  transform: translateY(0);
 }
 
 .cell-revealed {
-  background: #fafafa;
-  border: 1px solid #d8d8d8;
+  background:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(250, 252, 255, 0.5) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   cursor: default;
-  box-shadow: inset 0 0.5px 1px rgba(0, 0, 0, 0.03);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.04),
+    0 1px 2px rgba(0, 0, 0, 0.02);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .cell-mine-revealed {
-  background: linear-gradient(145deg, #ff1a1a, #e60000);
-  border: 1px solid #cc0000;
-  animation: explode 0.2s ease-out;
+  background:
+    linear-gradient(135deg,
+      rgba(255, 70, 100, 1) 0%,
+      rgba(255, 30, 70, 1) 100%);
+  border: 1px solid rgba(200, 0, 40, 0.5);
+  animation: explode 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow:
+    0 8px 24px rgba(255, 30, 70, 0.4),
+    0 4px 8px rgba(255, 30, 70, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+.cell-mine-revealed::before {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 70%
+  );
+  opacity: 1;
 }
 
 .cell-flagged {
-  background: linear-gradient(145deg, #fff5f5, #ffe8e8);
-  border: 1px solid #ff0000;
+  background:
+    linear-gradient(135deg,
+      rgba(255, 240, 245, 1) 0%,
+      rgba(255, 235, 242, 1) 100%);
+  border: 1px solid rgba(255, 70, 100, 0.3);
+  box-shadow:
+    0 2px 8px rgba(255, 70, 100, 0.15),
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.cell-flagged::before {
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 70, 100, 0.1) 0%,
+    transparent 70%
+  );
+  opacity: 1;
 }
 
 .cell-questioned {
-  background: linear-gradient(145deg, #ececec, #e0e0e0);
-  border: 1px solid #999999;
+  background:
+    linear-gradient(135deg,
+      rgba(250, 250, 255, 1) 0%,
+      rgba(245, 245, 252, 1) 100%);
+  border: 1px solid rgba(100, 100, 150, 0.2);
+  box-shadow:
+    0 2px 6px rgba(100, 100, 150, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .cell-number {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
-  font-family: 'SF Mono', 'Monaco', monospace;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
   color: #000000;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  position: relative;
+  z-index: 2;
 }
 
 .cell-mine {
-  font-size: 13px;
-  animation: bounce 0.2s ease-out;
+  font-size: 18px;
+  animation: bounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  position: relative;
+  z-index: 2;
 }
 
 .cell-flag {
-  font-size: 12px;
-  color: #ff0000;
-  animation: flag-wave 0.2s ease-out;
+  font-size: 16px;
+  color: #ff4660;
+  animation: flag-wave 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  filter: drop-shadow(0 2px 4px rgba(255, 70, 100, 0.4));
+  position: relative;
+  z-index: 2;
 }
 
 .cell-question {
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
-  color: #666666;
+  color: #6670ff;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  position: relative;
+  z-index: 2;
 }
 
 @keyframes explode {
   0% {
-    transform: scale(0.8);
+    transform: scale(0.7) rotate(-5deg);
+    opacity: 0.8;
   }
   50% {
-    transform: scale(1.1);
+    transform: scale(1.15) rotate(5deg);
+    opacity: 1;
   }
   100% {
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
   }
 }
 
 @keyframes bounce {
-  0%, 100% {
-    transform: scale(1);
+  0% {
+    transform: scale(0.5) translateY(10px);
+    opacity: 0;
   }
   50% {
-    transform: scale(1.2);
+    transform: scale(1.2) translateY(-5px);
+  }
+  70% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
   }
 }
 
 @keyframes flag-wave {
   0% {
-    transform: rotate(0deg);
+    transform: scale(0.5) rotate(-30deg);
+    opacity: 0;
   }
-  25% {
-    transform: rotate(-15deg);
+  50% {
+    transform: scale(1.15) rotate(10deg);
   }
-  75% {
-    transform: rotate(15deg);
+  70% {
+    transform: scale(0.95) rotate(-5deg);
   }
   100% {
-    transform: rotate(0deg);
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
   }
 }
 
 /* Responsive sizing */
 @media (max-width: 768px) {
   .cell {
-    min-width: 24px;
-    min-height: 24px;
-    font-size: 11px;
+    font-size: 13px;
+    border-radius: 4px;
   }
 
-  .cell-mine,
+  .cell-mine {
+    font-size: 16px;
+  }
+
   .cell-flag {
-    font-size: 11px;
+    font-size: 14px;
   }
 
   .cell-number {
-    font-size: 11px;
+    font-size: 13px;
+  }
+
+  .cell-question {
+    font-size: 14px;
   }
 }
 
 @media (max-width: 480px) {
   .cell {
-    min-width: 20px;
-    min-height: 20px;
-    font-size: 10px;
+    font-size: 11px;
+    border-radius: 3px;
   }
 
-  .cell-mine,
+  .cell-mine {
+    font-size: 14px;
+  }
+
   .cell-flag {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .cell-number {
-    font-size: 10px;
+    font-size: 11px;
+  }
+
+  .cell-question {
+    font-size: 12px;
   }
 }
