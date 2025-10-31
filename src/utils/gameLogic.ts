@@ -145,7 +145,7 @@ export function toggleFlag(board: Cell[][], row: number, col: number): Cell[][] 
   return newBoard;
 }
 
-export function checkWin(board: Cell[][], mineCount: number): boolean {
+export function checkWin(board: Cell[][]): boolean {
   let hiddenNonMineCount = 0;
 
   for (const row of board) {
