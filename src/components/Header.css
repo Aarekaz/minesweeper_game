@@ -1,34 +1,32 @@
 .header {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1600px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(10px);
-  border: 1px solid #333333;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  background: #ffffff;
+  border: 2px solid #000000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   z-index: 100;
-  animation: header-slide-in 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: header-slide-in 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
 }
 
 @keyframes header-slide-in {
   from {
     opacity: 0;
-    transform: translate(-50%, -20px);
+    transform: translateY(-4px);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translateY(0);
   }
 }
 
 .header-section {
   display: flex;
-  gap: 12px;
+  gap: 4px;
   align-items: center;
   flex: 1;
 }
@@ -39,7 +37,7 @@
 
 .header-stats {
   display: flex;
-  gap: 24px;
+  gap: 6px;
   align-items: center;
   justify-content: center;
   flex: 1;
@@ -47,143 +45,134 @@
 
 .stat-display {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 4px;
-  background: transparent;
-  padding: 8px 16px;
-  border: 1px solid #333333;
-  min-width: 70px;
+  gap: 5px;
+  background: #f5f5f5;
+  padding: 3px 8px;
+  border: 1px solid #000000;
+  min-width: 60px;
 }
 
 .stat-label {
-  font-size: 10px;
-  font-weight: 400;
+  font-size: 8px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.2px;
+  color: #666666;
 }
 
 .stat-value {
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
-  color: #ffffff;
+  font-family: 'SF Mono', 'Monaco', monospace;
+  color: #000000;
 }
 
 .reset-button {
-  width: 48px;
-  height: 48px;
-  border: 1px solid #ffffff;
+  width: 32px;
+  height: 32px;
+  border: 2px solid #000000;
   border-radius: 0;
-  background: #000000;
+  background: #ffffff;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.08s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .reset-button:hover {
-  background: #1a1a1a;
-  border-color: #ff0000;
+  background: #000000;
 }
 
 .reset-button:active {
-  background: #0a0a0a;
-  transform: scale(0.98);
+  transform: scale(0.95);
 }
 
 .reset-emoji {
-  font-size: 24px;
-  transition: transform 0.15s ease;
+  font-size: 16px;
+  transition: transform 0.08s ease;
 }
 
 .reset-button:hover .reset-emoji {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .icon-button {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #333333;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #000000;
   border-radius: 0;
-  background: transparent;
+  background: #f5f5f5;
   cursor: pointer;
-  font-size: 18px;
-  transition: all 0.15s ease;
+  font-size: 12px;
+  transition: all 0.08s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .icon-button:hover {
-  background: #1a1a1a;
-  border-color: #ffffff;
+  background: #000000;
+  border-color: #000000;
 }
 
 .icon-button:active {
-  background: #0a0a0a;
+  transform: scale(0.95);
 }
 
 .status-indicator {
-  background: transparent;
-  padding: 8px 16px;
-  border: 1px solid #333333;
+  background: #f5f5f5;
+  padding: 3px 8px;
+  border: 1px solid #000000;
 }
 
 .status-text {
-  font-size: 12px;
-  font-weight: 400;
-  color: #ffffff;
+  font-size: 8px;
+  font-weight: 600;
+  color: #000000;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.2px;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
   .header {
-    top: 10px;
-    padding: 12px 16px;
-    flex-direction: column;
-    gap: 12px;
+    padding: 4px 8px;
+    flex-wrap: wrap;
+    gap: 4px;
   }
 
   .header-section {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .header-section-right {
-    justify-content: center;
+    gap: 4px;
   }
 
   .header-stats {
-    width: 100%;
-    gap: 12px;
+    gap: 6px;
   }
 
   .stat-display {
-    min-width: 60px;
-    padding: 6px 12px;
+    min-width: 55px;
+    padding: 3px 8px;
   }
 
   .stat-value {
-    font-size: 16px;
+    font-size: 13px;
   }
 
   .reset-button {
-    width: 44px;
-    height: 44px;
+    width: 32px;
+    height: 32px;
   }
 
   .reset-emoji {
-    font-size: 20px;
+    font-size: 16px;
   }
 
   .icon-button {
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
   }
 }

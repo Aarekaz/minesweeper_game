@@ -1,27 +1,32 @@
 .board {
   display: grid;
-  gap: 1px;
+  gap: 0.5px;
   padding: 0;
   background: #000000;
-  border: 1px solid #ffffff;
-  box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
-  animation: board-enter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 3px solid #000000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  animation: board-enter 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-grow: 1;
+  max-height: calc(100vh - 56px);
+  width: auto;
 }
 
 @keyframes board-enter {
   from {
     opacity: 0;
-    transform: scale(0.98);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
   }
 }
 
 /* Responsive board sizing */
 @media (max-width: 768px) {
   .board {
-    gap: 1px;
+    gap: 0.5px;
+    border-width: 2px;
+    max-height: calc(100vh - 48px);
   }
 }
