@@ -94,7 +94,7 @@ export function useGame(config: GameConfig) {
           setBoard(newBoard);
 
           // Check win condition
-          if (checkWin(newBoard, config.mines)) {
+          if (checkWin(newBoard)) {
             setGameStatus('won');
             setStats(prevStats => updateStats(prevStats, true, time));
           }
@@ -119,7 +119,7 @@ export function useGame(config: GameConfig) {
       }
 
       // Check win condition with flags
-      if (minesPlaced && checkWin(newBoard, config.mines)) {
+      if (minesPlaced && checkWin(newBoard)) {
         setGameStatus('won');
         setStats(prevStats => updateStats(prevStats, true, time));
       }
@@ -160,7 +160,7 @@ export function useGame(config: GameConfig) {
         setBoard(newBoard);
 
         // Check win condition
-        if (checkWin(newBoard, config.mines)) {
+        if (checkWin(newBoard)) {
           setGameStatus('won');
           setStats(prevStats => updateStats(prevStats, true, time));
         }
