@@ -146,22 +146,19 @@ export function toggleFlag(board: Cell[][], row: number, col: number): Cell[][] 
 }
 
 export function checkWin(board: Cell[][], mineCount: number): boolean {
-  let hiddenCount = 0;
-  let flaggedMinesCount = 0;
+  let hiddenNonMineCount = 0;
 
   for (const row of board) {
     for (const cell of row) {
-      if (cell.state === 'hidden' || cell.state === 'questioned') {
-        hiddenCount++;
-      }
-      if (cell.state === 'flagged' && cell.isMine) {
-        flaggedMinesCount++;
+      // Count only non-mine cells that are not revealed
+      if (!cell.isMine && cell.state !== 'revealed') {
+        hiddenNonMineCount++;
       }
     }
   }
 
   // Win if all non-mine cells are revealed
-  return hiddenCount === mineCount || flaggedMinesCount === mineCount;
+  return hiddenNonMineCount === 0;
 }
 
 export function countFlags(board: Cell[][]): number {

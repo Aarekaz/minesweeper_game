@@ -101,7 +101,6 @@ const Cell: React.FC<CellProps> = ({
   return (
     <button
       className={getCellClassName()}
-      onClick={handleClick}
       onContextMenu={handleContextMenu}
       onMouseDown={handleClick}
       disabled={gameOver && cell.state !== 'revealed'}
