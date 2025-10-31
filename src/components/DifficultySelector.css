@@ -4,35 +4,25 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  animation: fade-in 0.3s ease-out;
+  animation: fade-in 0.2s ease-out;
 }
 
 .modal-content {
-  background:
-    linear-gradient(135deg,
-      rgba(255, 255, 255, 0.98) 0%,
-      rgba(250, 252, 255, 0.95) 100%);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 24px;
+  background: #ffffff;
+  border: 2px solid #e5e5e5;
+  border-radius: 2px;
   padding: 32px;
   max-width: 560px;
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.2),
-    0 8px 20px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  animation: slide-up 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  animation: slide-up 0.2s ease-out;
 }
 
 @keyframes fade-in {
@@ -47,13 +37,11 @@
 @keyframes slide-up {
   from {
     opacity: 0;
-    transform: translateY(40px) scale(0.9);
-    filter: blur(10px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
+    transform: translateY(0);
   }
 }
 
@@ -65,55 +53,38 @@
 }
 
 .modal-header h2 {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 600;
   color: #000000;
   letter-spacing: -0.5px;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
-  background: linear-gradient(135deg, #000000 0%, #333333 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .close-button {
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  background:
-    linear-gradient(135deg,
-      rgba(255, 255, 255, 0.6) 0%,
-      rgba(250, 252, 255, 0.5) 100%);
+  border: 1px solid #e5e5e5;
+  border-radius: 2px;
+  background: #fafafa;
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
-  color: #666666;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #737373;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .close-button:hover {
-  background:
-    linear-gradient(135deg,
-      rgba(255, 70, 100, 0.15) 0%,
-      rgba(255, 50, 80, 0.1) 100%);
-  border-color: rgba(255, 70, 100, 0.3);
-  color: #ff4660;
-  box-shadow:
-    0 4px 12px rgba(255, 70, 100, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  transform: scale(1.05);
+  background: #f5f5f5;
+  border-color: #d4d4d4;
+  color: #000000;
 }
 
 .close-button:active {
-  transform: scale(0.98);
+  transform: scale(0.95);
 }
 
 .difficulty-grid {
@@ -125,95 +96,56 @@
 
 .difficulty-card {
   padding: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 16px;
-  background:
-    linear-gradient(135deg,
-      rgba(255, 255, 255, 0.6) 0%,
-      rgba(250, 252, 255, 0.5) 100%);
+  border: 2px solid #e5e5e5;
+  border-radius: 2px;
+  background: #fafafa;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   text-align: left;
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .difficulty-card:hover {
-  border-color: rgba(100, 150, 255, 0.3);
-  background:
-    linear-gradient(135deg,
-      rgba(240, 245, 255, 1) 0%,
-      rgba(235, 242, 252, 1) 100%);
-  box-shadow:
-    0 4px 16px rgba(100, 150, 255, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  transform: translateY(-2px);
+  border-color: #a3a3a3;
+  background: #f5f5f5;
 }
 
 .difficulty-card.selected {
-  border-color: rgba(100, 150, 255, 0.5);
-  background:
-    linear-gradient(135deg,
-      rgba(240, 245, 255, 1) 0%,
-      rgba(235, 242, 252, 1) 100%);
-  box-shadow:
-    0 8px 24px rgba(100, 150, 255, 0.25),
-    0 4px 8px rgba(100, 150, 255, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  transform: translateY(-2px) scale(1.02);
+  border-color: #000000;
+  background: #ffffff;
 }
 
 .difficulty-label {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 6px;
   color: #000000;
   letter-spacing: -0.2px;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
-}
-
-.difficulty-card.selected .difficulty-label {
-  color: #000000;
-  background: linear-gradient(135deg, #000000 0%, #333333 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .difficulty-description {
   font-size: 13px;
-  color: #666666;
+  color: #737373;
   font-weight: 400;
-  line-height: 1.4;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
-}
-
-.difficulty-card.selected .difficulty-description {
-  color: #555555;
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .custom-settings {
-  background:
-    linear-gradient(135deg,
-      rgba(255, 255, 255, 0.5) 0%,
-      rgba(250, 252, 255, 0.4) 100%);
+  background: #fafafa;
   padding: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 16px;
+  border: 1px solid #e5e5e5;
+  border-radius: 2px;
   margin-bottom: 20px;
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .custom-settings h3 {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   color: #000000;
   letter-spacing: -0.2px;
   margin: 0 0 16px 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .custom-inputs {
@@ -230,42 +162,29 @@
 
 .input-group label {
   font-size: 11px;
-  font-weight: 600;
-  color: #666666;
+  font-weight: 500;
+  color: #737373;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .input-group input {
   padding: 10px 12px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 10px;
-  background:
-    linear-gradient(135deg,
-      rgba(255, 255, 255, 0.9) 0%,
-      rgba(250, 252, 255, 0.8) 100%);
+  border: 1px solid #e5e5e5;
+  border-radius: 2px;
+  background: #ffffff;
   color: #000000;
   font-size: 15px;
-  font-weight: 600;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  transition: all 0.2s ease;
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: rgba(100, 150, 255, 0.5);
-  background:
-    linear-gradient(135deg,
-      rgba(240, 245, 255, 1) 0%,
-      rgba(235, 242, 252, 1) 100%);
-  box-shadow:
-    0 4px 12px rgba(100, 150, 255, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  transform: translateY(-1px);
+  border-color: #a3a3a3;
+  background: #fafafa;
 }
 
 .modal-footer {
@@ -276,72 +195,44 @@
 
 .button {
   padding: 12px 24px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
+  border: 2px solid #e5e5e5;
+  border-radius: 2px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.2px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .button-secondary {
-  background:
-    linear-gradient(135deg,
-      rgba(255, 255, 255, 0.6) 0%,
-      rgba(250, 252, 255, 0.5) 100%);
-  color: #666666;
+  background: #fafafa;
+  color: #737373;
 }
 
 .button-secondary:hover {
-  background:
-    linear-gradient(135deg,
-      rgba(245, 245, 250, 1) 0%,
-      rgba(240, 242, 250, 1) 100%);
-  border-color: rgba(0, 0, 0, 0.12);
+  background: #f5f5f5;
+  border-color: #d4d4d4;
   color: #000000;
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  transform: translateY(-1px);
 }
 
 .button-primary {
-  background:
-    linear-gradient(135deg,
-      rgba(100, 150, 255, 1) 0%,
-      rgba(80, 130, 255, 1) 100%);
+  background: #000000;
   color: #ffffff;
-  border-color: rgba(100, 150, 255, 0.5);
-  box-shadow:
-    0 4px 12px rgba(100, 150, 255, 0.3),
-    0 2px 4px rgba(100, 150, 255, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border-color: #000000;
 }
 
 .button-primary:hover {
-  background:
-    linear-gradient(135deg,
-      rgba(80, 130, 255, 1) 0%,
-      rgba(60, 110, 255, 1) 100%);
-  border-color: rgba(80, 130, 255, 0.6);
-  box-shadow:
-    0 6px 16px rgba(100, 150, 255, 0.4),
-    0 4px 8px rgba(100, 150, 255, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+  background: #262626;
+  border-color: #262626;
 }
 
 .button-primary:active {
-  transform: translateY(0) scale(0.98);
+  transform: scale(0.98);
 }
 
 .button-secondary:active {
-  transform: translateY(0) scale(0.98);
+  transform: scale(0.98);
 }
 
 /* Responsive design */
