@@ -1,3 +1,18 @@
+"""
+⚠️  DEPRECATED - This file is no longer used ⚠️
+
+This was the original Python/tkinter implementation.
+The game has been completely rebuilt as a modern web application!
+
+🎮 To run the new version:
+   ./start.sh
+   OR
+   npm install && npm run dev
+
+See README.md for full documentation.
+"""
+
+# Legacy Python/tkinter code (kept for reference only)
 from tkinter import *
 
 root = Tk()
