@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Mine body -->
+  <circle cx="50" cy="50" r="35" fill="url(#grad1)" />
+
+  <!-- Spikes -->
+  <rect x="48" y="5" width="4" height="20" rx="2" fill="#333" />
+  <rect x="48" y="75" width="4" height="20" rx="2" fill="#333" />
+  <rect x="5" y="48" width="20" height="4" ry="2" fill="#333" />
+  <rect x="75" y="48" width="20" height="4" ry="2" fill="#333" />
+
+  <!-- Diagonal spikes -->
+  <rect x="20" y="20" width="4" height="15" rx="2" fill="#333" transform="rotate(-45 22 27.5)" />
+  <rect x="76" y="20" width="4" height="15" rx="2" fill="#333" transform="rotate(45 78 27.5)" />
+  <rect x="20" y="76" width="4" height="15" rx="2" fill="#333" transform="rotate(45 22 83.5)" />
+  <rect x="76" y="76" width="4" height="15" rx="2" fill="#333" transform="rotate(-45 78 83.5)" />
+
+  <!-- Shine effect -->
+  <circle cx="40" cy="40" r="8" fill="rgba(255,255,255,0.4)" />
+</svg>
