@@ -1,23 +1,46 @@
 .board {
   display: grid;
-  gap: 2px;
-  padding: 8px;
-  background: #ffffff;
-  border: 2px solid #e5e5e5;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  animation: board-enter 0.3s ease-out;
+  gap: 3px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(15, 15, 30, 0.95), rgba(26, 26, 46, 0.95));
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 60px rgba(99, 102, 241, 0.05);
+  animation: board-enter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
+}
+
+.board::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2));
+  border-radius: 24px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: -1;
+}
+
+.board:hover::before {
+  opacity: 1;
 }
 
 @keyframes board-enter {
   from {
     opacity: 0;
-    transform: translateY(5px);
+    transform: scale(0.95) translateY(20px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1) translateY(0);
   }
 }
 

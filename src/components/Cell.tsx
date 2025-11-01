@@ -34,14 +34,14 @@ const Cell: React.FC<CellProps> = ({
   const getNumberColor = (num: number): string => {
     const colors = [
       '',
-      '#0051ff', // 1 - blue
-      '#00aa00', // 2 - green
-      '#ff0000', // 3 - red
-      '#000088', // 4 - dark blue
-      '#880000', // 5 - dark red
-      '#008888', // 6 - teal
-      '#000000', // 7 - black
-      '#666666', // 8 - gray
+      '#60a5fa', // 1 - bright blue
+      '#34d399', // 2 - bright green
+      '#f87171', // 3 - bright red
+      '#818cf8', // 4 - bright indigo
+      '#fb923c', // 5 - bright orange
+      '#a78bfa', // 6 - bright purple
+      '#fbbf24', // 7 - bright yellow
+      '#e879f9', // 8 - bright pink
     ];
     return colors[num] || '';
   };
