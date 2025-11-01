@@ -7,8 +7,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 24px;
-  background: #0a0a0a;
-  border: 1px solid #333333;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
   z-index: 100;
   gap: 24px;
   min-width: 600px;
@@ -38,9 +40,9 @@
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  background: #1a1a1a;
+  background: rgba(26, 26, 26, 0.8);
   padding: 8px 16px;
-  border: 1px solid #333333;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   min-width: 90px;
 }
 
@@ -64,8 +66,8 @@
 .reset-button {
   width: 40px;
   height: 40px;
-  border: 1px solid #666666;
-  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(26, 26, 26, 0.8);
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -74,8 +76,8 @@
 }
 
 .reset-button:hover {
-  background: #333333;
-  border-color: #ffffff;
+  background: rgba(51, 51, 51, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .reset-button:active {
@@ -89,8 +91,8 @@
 .icon-button {
   width: 40px;
   height: 40px;
-  border: 1px solid #333333;
-  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(26, 26, 26, 0.8);
   cursor: pointer;
   font-size: 16px;
   transition: all 0.2s ease;
@@ -101,8 +103,8 @@
 }
 
 .icon-button:hover {
-  background: #333333;
-  border-color: #ffffff;
+  background: rgba(51, 51, 51, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .icon-button:active {
@@ -110,9 +112,9 @@
 }
 
 .status-indicator {
-  background: #1a1a1a;
+  background: rgba(26, 26, 26, 0.8);
   padding: 8px 14px;
-  border: 1px solid #333333;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .status-text {
