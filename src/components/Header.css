@@ -1,31 +1,24 @@
 .header {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 32px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 16px;
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.2),
-    0 4px 6px -2px rgba(0, 0, 0, 0.1);
-  margin-bottom: 24px;
-  animation: header-slide-in 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes header-slide-in {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  padding: 12px 24px;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  gap: 24px;
+  min-width: 600px;
 }
 
 .header-section {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
   flex: 1;
 }
@@ -36,7 +29,7 @@
 
 .header-stats {
   display: flex;
-  gap: 24px;
+  gap: 12px;
   align-items: center;
   justify-content: center;
   flex: 1;
@@ -44,53 +37,47 @@
 
 .stat-display {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 12px 20px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  min-width: 80px;
+  gap: 8px;
+  background: rgba(26, 26, 26, 0.8);
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  min-width: 90px;
 }
 
 .stat-label {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 1px;
+  color: #666666;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .stat-value {
-  font-size: 20px;
-  font-weight: 800;
-  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
   color: #ffffff;
+  font-variant-numeric: tabular-nums;
 }
 
 .reset-button {
-  width: 64px;
-  height: 64px;
-  border: none;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
-  box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.1),
-    0 2px 4px rgba(0, 0, 0, 0.06);
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(26, 26, 26, 0.8);
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .reset-button:hover {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow:
-    0 10px 15px rgba(0, 0, 0, 0.15),
-    0 4px 6px rgba(0, 0, 0, 0.1);
+  background: rgba(51, 51, 51, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .reset-button:active {
@@ -98,81 +85,60 @@
 }
 
 .reset-emoji {
-  font-size: 32px;
-  transition: transform 0.2s ease;
-}
-
-.reset-button:hover .reset-emoji {
-  transform: scale(1.1);
+  font-size: 20px;
 }
 
 .icon-button {
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(26, 26, 26, 0.8);
   cursor: pointer;
-  font-size: 20px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 16px;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #ffffff;
 }
 
 .icon-button:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: rgba(51, 51, 51, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .icon-button:active {
-  transform: translateY(0);
+  transform: scale(0.95);
 }
 
 .status-indicator {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  padding: 10px 20px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(26, 26, 26, 0.8);
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .status-text {
-  font-size: 14px;
-  font-weight: 700;
-  color: #ffffff;
+  font-size: 10px;
+  font-weight: 500;
+  color: #999999;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
   .header {
-    padding: 16px;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .header-section {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .header-section-right {
-    justify-content: center;
-  }
-
-  .header-stats {
-    width: 100%;
-    gap: 16px;
+    padding: 12px 20px;
   }
 
   .stat-display {
-    min-width: 60px;
-    padding: 8px 12px;
+    min-width: 80px;
+    padding: 8px 14px;
+  }
+
+  .stat-label {
+    font-size: 10px;
   }
 
   .stat-value {
@@ -180,23 +146,37 @@
   }
 
   .reset-button {
-    width: 52px;
-    height: 52px;
+    width: 42px;
+    height: 42px;
   }
 
   .reset-emoji {
-    font-size: 28px;
+    font-size: 20px;
+  }
+
+  .icon-button {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .status-indicator {
+    padding: 6px 12px;
+  }
+
+  .status-text {
+    font-size: 10px;
   }
 }
 
 @media (max-width: 480px) {
   .header {
-    padding: 12px;
+    padding: 10px 16px;
   }
 
   .stat-display {
-    min-width: 50px;
-    padding: 6px 10px;
+    min-width: 70px;
+    padding: 7px 12px;
   }
 
   .stat-label {
@@ -208,17 +188,25 @@
   }
 
   .reset-button {
-    width: 48px;
-    height: 48px;
+    width: 38px;
+    height: 38px;
   }
 
   .reset-emoji {
-    font-size: 24px;
+    font-size: 18px;
   }
 
   .icon-button {
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  .status-indicator {
+    padding: 5px 10px;
+  }
+
+  .status-text {
+    font-size: 9px;
   }
 }

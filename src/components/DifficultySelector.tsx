@@ -19,10 +19,10 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = ({
   const [customMines, setCustomMines] = useState(40);
 
   const difficulties: Array<{ key: Difficulty; label: string; description: string }> = [
-    { key: 'beginner', label: 'Beginner', description: '9×9 grid, 10 mines' },
-    { key: 'intermediate', label: 'Intermediate', description: '16×16 grid, 40 mines' },
-    { key: 'expert', label: 'Expert', description: '16×30 grid, 99 mines' },
-    { key: 'custom', label: 'Custom', description: 'Create your own challenge' },
+    { key: 'beginner', label: 'Beginner', description: '9×9 • 10 mines • Perfect for starters' },
+    { key: 'intermediate', label: 'Intermediate', description: '16×16 • 40 mines • Balanced challenge' },
+    { key: 'expert', label: 'Expert', description: '16×30 • 99 mines • Maximum intensity' },
+    { key: 'custom', label: 'Custom', description: 'Design your perfect grid size' },
   ];
 
   const handleSelect = () => {
@@ -65,6 +65,26 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = ({
         {selectedDifficulty === 'custom' && (
           <div className="custom-settings">
             <h3>Custom Settings</h3>
+            <div className="preset-buttons">
+              <button
+                className="preset-button"
+                onClick={() => { setCustomRows(12); setCustomCols(12); setCustomMines(20); }}
+              >
+                Small (12×12)
+              </button>
+              <button
+                className="preset-button"
+                onClick={() => { setCustomRows(20); setCustomCols(20); setCustomMines(60); }}
+              >
+                Large (20×20)
+              </button>
+              <button
+                className="preset-button"
+                onClick={() => { setCustomRows(20); setCustomCols(30); setCustomMines(120); }}
+              >
+                XL (20×30)
+              </button>
+            </div>
             <div className="custom-inputs">
               <div className="input-group">
                 <label htmlFor="rows">Rows</label>

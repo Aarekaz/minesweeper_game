@@ -12,7 +12,6 @@ function App() {
   const [config, setConfig] = useState<GameConfig>(DIFFICULTY_CONFIGS.beginner);
   const [showDifficultySelector, setShowDifficultySelector] = useState(false);
   const [showStats, setShowStats] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(true);
 
   const {
     board,
@@ -20,19 +19,14 @@ function App() {
     time,
     remainingMines,
     stats,
+    combo,
+    maxCombo,
     resetGame,
     handleCellClick,
     handleCellRightClick,
     handleCellMiddleClick,
   } = useGame(config);
 
-  // Show welcome screen on first load
-  useEffect(() => {
-    const hasSeenWelcome = localStorage.getItem('minesweeper-welcome-seen');
-    if (hasSeenWelcome) {
-      setShowWelcome(false);
-    }
-  }, []);
 
   const handleDifficultyChange = (newDifficulty: Difficulty, newConfig: GameConfig) => {
     setDifficulty(newDifficulty);
@@ -42,10 +36,6 @@ function App() {
     setTimeout(resetGame, 0);
   };
 
-  const handleWelcomeClose = () => {
-    localStorage.setItem('minesweeper-welcome-seen', 'true');
-    setShowWelcome(false);
-  };
 
   // Prevent context menu on the entire app
   useEffect(() => {
@@ -61,15 +51,6 @@ function App() {
   return (
     <div className="app">
       <div className="app-container">
-        <div className="app-header">
-          <h1 className="app-title">
-            <span className="title-icon">💣</span>
-            Minesweeper Pro
-          </h1>
-          <p className="app-subtitle">
-            The ultimate minesweeper experience
-          </p>
-        </div>
 
         <Header
           time={time}
@@ -88,6 +69,16 @@ function App() {
           gameOver={gameStatus === 'won' || gameStatus === 'lost'}
         />
 
+        {/* Combo Counter */}
+        {combo > 1 && gameStatus === 'playing' && (
+          <div className={`combo-counter ${combo > 5 ? 'combo-hot' : ''} ${combo > 10 ? 'combo-fire' : ''}`}>
+            <div className="combo-text">
+              {combo}x COMBO
+            </div>
+            {combo > 5 && <div className="combo-streak">🔥</div>}
+          </div>
+        )}
+
         {gameStatus === 'won' && (
           <div className="game-message victory-message">
             <div className="message-content">
@@ -95,6 +86,7 @@ function App() {
               <div className="message-text">
                 <h2>Victory!</h2>
                 <p>Completed in {Math.floor(time / 60)}:{(time % 60).toString().padStart(2, '0')}</p>
+                {maxCombo > 1 && <p className="combo-stat">Max Combo: {maxCombo}x 🔥</p>}
               </div>
             </div>
           </div>
@@ -112,22 +104,16 @@ function App() {
           </div>
         )}
 
-        <div className="app-footer">
-          <div className="controls-hint">
-            <div className="hint-item">
-              <span className="hint-icon">🖱️</span>
-              <span>Left Click: Reveal</span>
-            </div>
-            <div className="hint-item">
-              <span className="hint-icon">🚩</span>
-              <span>Right Click: Flag</span>
-            </div>
-            <div className="hint-item">
-              <span className="hint-icon">⚡</span>
-              <span>Middle Click: Chord</span>
-            </div>
-          </div>
-        </div>
+        {/* Attribution link */}
+        <a
+          href="https://app.tembo.io/sign-up?utm_source=aarekaz&utm_id=aarekaz"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="tembo-attribution"
+        >
+          Made by my background agent at Tembo
+        </a>
+
       </div>
 
       {showDifficultySelector && (
@@ -143,41 +129,6 @@ function App() {
           stats={stats}
           onClose={() => setShowStats(false)}
         />
-      )}
-
-      {showWelcome && (
-        <div className="modal-overlay" onClick={handleWelcomeClose}>
-          <div className="modal-content welcome-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="welcome-header">
-              <span className="welcome-icon">💣</span>
-              <h1>Welcome to Minesweeper Pro</h1>
-            </div>
-            <div className="welcome-content">
-              <p>The most beautiful minesweeper game you've ever played!</p>
-              <div className="welcome-features">
-                <div className="feature">
-                  <span className="feature-icon">✨</span>
-                  <span>Gorgeous gradients & animations</span>
-                </div>
-                <div className="feature">
-                  <span className="feature-icon">🎮</span>
-                  <span>Multiple difficulty levels</span>
-                </div>
-                <div className="feature">
-                  <span className="feature-icon">📊</span>
-                  <span>Track your statistics</span>
-                </div>
-                <div className="feature">
-                  <span className="feature-icon">⚡</span>
-                  <span>Smooth gameplay</span>
-                </div>
-              </div>
-            </div>
-            <button className="button button-primary welcome-button" onClick={handleWelcomeClose}>
-              Let's Play!
-            </button>
-          </div>
-        </div>
       )}
     </div>
   );
