@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Cell as CellType } from '../types/game';
 import './Cell.css';
 
@@ -17,9 +17,51 @@ const Cell: React.FC<CellProps> = ({
   onMiddleClick,
   gameOver,
 }) => {
+  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; color: string }>>([]);
+  const [justRevealed, setJustRevealed] = useState(false);
+  const [exploding, setExploding] = useState(false);
+
+  // Track when cell is revealed for animation
+  useEffect(() => {
+    if (cell.state === 'revealed' && !justRevealed) {
+      setJustRevealed(true);
+
+      // Check if it's a mine for explosion effect
+      if (cell.isMine) {
+        setExploding(true);
+        createExplosionParticles();
+        setTimeout(() => setExploding(false), 600);
+      }
+    }
+  }, [cell.state, cell.isMine]);
+
+  const createExplosionParticles = () => {
+    const newParticles = Array.from({ length: 12 }, (_, i) => ({
+      id: Date.now() + i,
+      x: Math.random() * 100 - 50,
+      y: Math.random() * 100 - 50,
+      color: ['#ff0000', '#ff6600', '#ffaa00'][Math.floor(Math.random() * 3)]
+    }));
+    setParticles(newParticles);
+    setTimeout(() => setParticles([]), 1000);
+  };
+
+  const createClickParticles = (color: string) => {
+    const newParticles = Array.from({ length: 6 }, (_, i) => ({
+      id: Date.now() + i,
+      x: Math.random() * 60 - 30,
+      y: Math.random() * 60 - 30,
+      color
+    }));
+    setParticles(newParticles);
+    setTimeout(() => setParticles([]), 600);
+  };
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (e.button === 0) {
+      if (cell.state === 'hidden') {
+        createClickParticles('#60a5fa');
+      }
       onClick();
     } else if (e.button === 1) {
       onMiddleClick();
@@ -28,6 +70,9 @@ const Cell: React.FC<CellProps> = ({
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (cell.state === 'hidden') {
+      createClickParticles('#ff0000');
+    }
     onRightClick();
   };
 
@@ -80,6 +125,9 @@ const Cell: React.FC<CellProps> = ({
 
     if (cell.state === 'revealed') {
       classes.push('cell-revealed');
+      if (justRevealed) {
+        classes.push('cell-reveal-animation');
+      }
       if (cell.isMine) {
         classes.push('cell-mine-revealed');
       }
@@ -95,6 +143,10 @@ const Cell: React.FC<CellProps> = ({
       classes.push('cell-questioned');
     }
 
+    if (exploding) {
+      classes.push('cell-exploding');
+    }
+
     return classes.join(' ');
   };
 
@@ -106,6 +158,22 @@ const Cell: React.FC<CellProps> = ({
       disabled={gameOver && cell.state !== 'revealed'}
     >
       {getCellContent()}
+
+      {/* Particle effects */}
+      {particles.map(particle => (
+        <div
+          key={particle.id}
+          className="particle"
+          style={{
+            left: `calc(50% + ${particle.x}px)`,
+            top: `calc(50% + ${particle.y}px)`,
+            background: particle.color,
+          }}
+        />
+      ))}
+
+      {/* Ripple effect on hover */}
+      <div className="cell-ripple" />
     </button>
   );
 };

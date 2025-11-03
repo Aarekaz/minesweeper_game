@@ -19,6 +19,8 @@ function App() {
     time,
     remainingMines,
     stats,
+    combo,
+    maxCombo,
     resetGame,
     handleCellClick,
     handleCellRightClick,
@@ -67,6 +69,16 @@ function App() {
           gameOver={gameStatus === 'won' || gameStatus === 'lost'}
         />
 
+        {/* Combo Counter */}
+        {combo > 1 && gameStatus === 'playing' && (
+          <div className={`combo-counter ${combo > 5 ? 'combo-hot' : ''} ${combo > 10 ? 'combo-fire' : ''}`}>
+            <div className="combo-text">
+              {combo}x COMBO
+            </div>
+            {combo > 5 && <div className="combo-streak">🔥</div>}
+          </div>
+        )}
+
         {gameStatus === 'won' && (
           <div className="game-message victory-message">
             <div className="message-content">
@@ -74,6 +86,7 @@ function App() {
               <div className="message-text">
                 <h2>Victory!</h2>
                 <p>Completed in {Math.floor(time / 60)}:{(time % 60).toString().padStart(2, '0')}</p>
+                {maxCombo > 1 && <p className="combo-stat">Max Combo: {maxCombo}x 🔥</p>}
               </div>
             </div>
           </div>

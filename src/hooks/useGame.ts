@@ -18,7 +18,10 @@ export function useGame(config: GameConfig) {
   const [minesPlaced, setMinesPlaced] = useState(false);
   const [time, setTime] = useState(0);
   const [stats, setStats] = useState<GameStats>(loadStats);
+  const [combo, setCombo] = useState(0);
+  const [maxCombo, setMaxCombo] = useState(0);
   const timerRef = useRef<number | null>(null);
+  const comboTimerRef = useRef<number | null>(null);
 
   const flagCount = countFlags(board);
   const remainingMines = config.mines - flagCount;
@@ -48,14 +51,46 @@ export function useGame(config: GameConfig) {
     saveStats(stats);
   }, [stats]);
 
+  const incrementCombo = useCallback(() => {
+    setCombo(prev => {
+      const newCombo = prev + 1;
+      setMaxCombo(max => Math.max(max, newCombo));
+      return newCombo;
+    });
+
+    // Reset combo timer
+    if (comboTimerRef.current !== null) {
+      clearTimeout(comboTimerRef.current);
+    }
+
+    // Combo expires after 2 seconds of inactivity
+    comboTimerRef.current = window.setTimeout(() => {
+      setCombo(0);
+    }, 2000);
+  }, []);
+
+  const resetCombo = useCallback(() => {
+    setCombo(0);
+    if (comboTimerRef.current !== null) {
+      clearTimeout(comboTimerRef.current);
+      comboTimerRef.current = null;
+    }
+  }, []);
+
   const resetGame = useCallback(() => {
     setBoard(createBoard(config));
     setGameStatus('idle');
     setMinesPlaced(false);
     setTime(0);
+    setCombo(0);
+    setMaxCombo(0);
     if (timerRef.current !== null) {
       clearInterval(timerRef.current);
       timerRef.current = null;
+    }
+    if (comboTimerRef.current !== null) {
+      clearTimeout(comboTimerRef.current);
+      comboTimerRef.current = null;
     }
   }, [config]);
 
@@ -89,9 +124,13 @@ export function useGame(config: GameConfig) {
           setBoard(revealedBoard);
           setGameStatus('lost');
           setStats(prevStats => updateStats(prevStats, false, time));
+          resetCombo();
         } else {
           const newBoard = revealCell(board, row, col);
           setBoard(newBoard);
+
+          // Increment combo for successful reveal
+          incrementCombo();
 
           // Check win condition
           if (checkWin(newBoard)) {
@@ -101,7 +140,7 @@ export function useGame(config: GameConfig) {
         }
       }
     },
-    [board, gameStatus, minesPlaced, config.mines, time]
+    [board, gameStatus, minesPlaced, config.mines, time, incrementCombo, resetCombo]
   );
 
   const handleCellRightClick = useCallback(
@@ -175,6 +214,8 @@ export function useGame(config: GameConfig) {
     time,
     remainingMines,
     stats,
+    combo,
+    maxCombo,
     resetGame,
     handleCellClick,
     handleCellRightClick,
