@@ -17,158 +17,116 @@
 .app-container {
   max-width: 100%;
   width: fit-content;
-  animation: app-enter 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes app-enter {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 
 .app-header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 
 .app-title {
-  font-size: 48px;
-  font-weight: 900;
+  font-size: 32px;
+  font-weight: 700;
   color: #ffffff;
-  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  margin-bottom: 8px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  animation: title-float 3s ease-in-out infinite;
-}
-
-@keyframes title-float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
+  gap: 12px;
 }
 
 .title-icon {
-  font-size: 56px;
-  animation: icon-rotate 4s ease-in-out infinite;
-}
-
-@keyframes icon-rotate {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(10deg);
-  }
+  font-size: 32px;
 }
 
 .app-subtitle {
-  font-size: 16px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .game-message {
-  margin-top: 24px;
-  padding: 24px;
-  border-radius: 16px;
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 4px;
   text-align: center;
-  animation: message-slide-in 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes message-slide-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .victory-message {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+  background: #10b981;
 }
 
 .defeat-message {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+  background: #ef4444;
 }
 
 .message-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 12px;
 }
 
 .message-icon {
-  font-size: 48px;
-  animation: icon-bounce 0.6s ease-out;
-}
-
-@keyframes icon-bounce {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
+  font-size: 24px;
 }
 
 .message-text h2 {
-  font-size: 28px;
-  font-weight: 800;
+  font-size: 18px;
+  font-weight: 700;
   color: #ffffff;
   margin-bottom: 4px;
 }
 
 .message-text p {
-  font-size: 16px;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.9);
 }
 
 .app-footer {
-  margin-top: 24px;
+  margin-top: 16px;
 }
 
 .controls-hint {
   display: flex;
   justify-content: center;
-  gap: 24px;
-  padding: 16px 24px;
+  gap: 16px;
+  padding: 12px 16px;
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .hint-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: 600;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
   color: #ffffff;
 }
 
 .hint-icon {
-  font-size: 20px;
+  font-size: 16px;
+}
+
+.attribution {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.attribution-link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.attribution-link:hover {
+  color: rgba(255, 255, 255, 0.95);
+  text-decoration: underline;
 }
 
 .welcome-modal {
@@ -181,19 +139,9 @@
 }
 
 .welcome-icon {
-  font-size: 64px;
+  font-size: 48px;
   display: block;
   margin-bottom: 16px;
-  animation: welcome-icon-pulse 2s ease-in-out infinite;
-}
-
-@keyframes welcome-icon-pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
 }
 
 .welcome-header h1 {

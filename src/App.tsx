@@ -127,6 +127,16 @@ function App() {
               <span>Middle Click: Chord</span>
             </div>
           </div>
+          <div className="attribution">
+            <a
+              href="https://app.tembo.io/sign-up?utm_source=aarekaz&utm_id=aarekaz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="attribution-link"
+            >
+              made by my background agent at Tembo
+            </a>
+          </div>
         </div>
       </div>
 
