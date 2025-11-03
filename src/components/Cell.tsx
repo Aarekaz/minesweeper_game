@@ -15,7 +15,7 @@ const Cell: React.FC<CellProps> = ({
   onClick,
   onRightClick,
   onMiddleClick,
-  gameOver,
+  gameOver: _gameOver, // Renamed to indicate intentionally unused
 }) => {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -103,7 +103,6 @@ const Cell: React.FC<CellProps> = ({
       className={getCellClassName()}
       onContextMenu={handleContextMenu}
       onMouseDown={handleClick}
-      disabled={gameOver && cell.state !== 'revealed'}
     >
       {getCellContent()}
     </button>
