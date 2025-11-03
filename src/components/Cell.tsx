@@ -58,6 +58,9 @@ const Cell: React.FC<CellProps> = ({
   };
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (gameOver) {
+      return;
+    }
     if (e.button === 0) {
       if (cell.state === 'hidden') {
         createClickParticles('#60a5fa');
@@ -70,7 +73,7 @@ const Cell: React.FC<CellProps> = ({
 
   const handleContextMenu = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (cell.state === 'hidden') {
+    if (cell.state === 'hidden' || cell.state === 'flagged' || cell.state === 'questioned') {
       createClickParticles('#ff0000');
     }
     onRightClick();
@@ -155,7 +158,7 @@ const Cell: React.FC<CellProps> = ({
       className={getCellClassName()}
       onContextMenu={handleContextMenu}
       onMouseDown={handleClick}
-      disabled={gameOver && cell.state !== 'revealed'}
+      disabled={false}
     >
       {getCellContent()}
 

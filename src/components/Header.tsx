@@ -25,6 +25,18 @@ const Header: React.FC<HeaderProps> = ({
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const handleResetClick = () => {
+    // Only show confirmation if game is in progress
+    if (gameStatus === 'playing' && time > 0) {
+      const confirmed = window.confirm('Are you sure you want to reset the game? Your current progress will be lost.');
+      if (confirmed) {
+        onReset();
+      }
+    } else {
+      onReset();
+    }
+  };
+
   const getStatusEmoji = () => {
     switch (gameStatus) {
       case 'won':
@@ -68,7 +80,7 @@ const Header: React.FC<HeaderProps> = ({
           <div className="stat-value">{remainingMines}</div>
         </div>
 
-        <button className="reset-button" onClick={onReset} title={`Reset Game - ${getStatusText()}`}>
+        <button className="reset-button" onClick={handleResetClick} title={`Reset Game - ${getStatusText()}`}>
           <span className="reset-emoji">{getStatusEmoji()}</span>
         </button>
 

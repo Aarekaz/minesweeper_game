@@ -104,6 +104,16 @@ function App() {
           </div>
         )}
 
+        {/* Attribution link */}
+        <a
+          href="https://app.tembo.io/sign-up?utm_source=aarekaz&utm_id=aarekaz"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="tembo-attribution"
+        >
+          Made by my background agent at Tembo
+        </a>
+
       </div>
 
       {showDifficultySelector && (
