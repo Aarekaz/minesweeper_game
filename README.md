@@ -2,6 +2,8 @@
 
 The most beautiful, modern, and feature-rich Minesweeper game you've ever played!
 
+Made completely by my background agent [Tembo](https://app.tembo.io/sign-up?utm_source=aarekaz&utm_id=aarekaz)
+
 ## ✨ Features
 
 - **Stunning UI/UX**: Beautiful gradients, smooth animations, and modern design
