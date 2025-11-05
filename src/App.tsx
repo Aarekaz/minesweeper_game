@@ -3,12 +3,16 @@ import { Difficulty, GameConfig, DIFFICULTY_CONFIGS } from './types/game';
 import { useGame } from './hooks/useGame';
 import { useSoundEffects } from './hooks/useSoundEffects';
 import { useTheme } from './hooks/useTheme';
+import { useAchievements } from './hooks/useAchievements';
 import { loadGameState, SavedGameState } from './utils/gameState';
+import { countFlags } from './utils/gameLogic';
 import Header from './components/Header';
 import Board from './components/Board';
 import DifficultySelector from './components/DifficultySelector';
 import StatsModal from './components/StatsModal';
 import SettingsModal from './components/SettingsModal';
+import AchievementsModal from './components/AchievementsModal';
+import AchievementNotification from './components/AchievementNotification';
 import './App.css';
 
 function App() {
@@ -17,11 +21,21 @@ function App() {
   const [showDifficultySelector, setShowDifficultySelector] = useState(false);
   const [showStats, setShowStats] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showAchievements, setShowAchievements] = useState(false);
   const [savedGameState, setSavedGameState] = useState<SavedGameState | null>(null);
   const [showContinuePrompt, setShowContinuePrompt] = useState(false);
 
   const { playSound, toggleSound, setVolume, soundEnabled, volume} = useSoundEffects();
   const { currentTheme, setTheme, themes } = useTheme();
+  const {
+    achievements,
+    newlyUnlocked,
+    updateProgress,
+    clearNewlyUnlocked,
+    getUnlockedCount,
+    getTotalCount,
+    getCompletionPercentage,
+  } = useAchievements();
 
   // Check for saved game on mount
   useEffect(() => {
@@ -112,6 +126,20 @@ function App() {
     };
   }, [gameStatus, togglePause, canUndo, undo]);
 
+  // Track achievements when game ends
+  useEffect(() => {
+    if (gameStatus === 'won' || gameStatus === 'lost') {
+      updateProgress({
+        won: gameStatus === 'won',
+        difficulty,
+        time,
+        maxCombo,
+        flagsUsed: countFlags(board),
+        mistakesMade: 0, // We don't track this yet, but it's in the interface
+      });
+    }
+  }, [gameStatus, difficulty, time, maxCombo, board, updateProgress]);
+
   return (
     <div className="app">
       <div className="app-container">
@@ -125,6 +153,7 @@ function App() {
           onReset={resetGame}
           onDifficultyChange={() => setShowDifficultySelector(true)}
           onStatsClick={() => setShowStats(true)}
+          onAchievementsClick={() => setShowAchievements(true)}
           onSettingsClick={() => setShowSettings(true)}
           onPauseClick={togglePause}
           onUndo={undo}
@@ -243,6 +272,24 @@ function App() {
           onVolumeChange={setVolume}
           onThemeChange={setTheme}
           onClose={() => setShowSettings(false)}
+        />
+      )}
+
+      {showAchievements && (
+        <AchievementsModal
+          achievements={achievements}
+          unlockedCount={getUnlockedCount()}
+          totalCount={getTotalCount()}
+          completionPercentage={getCompletionPercentage()}
+          onClose={() => setShowAchievements(false)}
+        />
+      )}
+
+      {/* Achievement Notifications */}
+      {newlyUnlocked.length > 0 && (
+        <AchievementNotification
+          achievement={newlyUnlocked[0]}
+          onClose={clearNewlyUnlocked}
         />
       )}
     </div>
