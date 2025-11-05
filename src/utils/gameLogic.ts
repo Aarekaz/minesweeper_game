@@ -1,4 +1,5 @@
 import { Cell, GameConfig } from '../types/game';
+import { SeededRandom } from './seededRandom';
 
 export function createBoard(config: GameConfig): Cell[][] {
   const { rows, cols } = config;
@@ -47,6 +48,69 @@ export function placeMines(
   while (minesPlaced < mineCount) {
     const row = Math.floor(Math.random() * rows);
     const col = Math.floor(Math.random() * cols);
+    const key = `${row},${col}`;
+
+    if (!newBoard[row][col].isMine && !safeZone.has(key)) {
+      newBoard[row][col].isMine = true;
+      minesPlaced++;
+    }
+  }
+
+  // Calculate neighbor mines
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      if (!newBoard[row][col].isMine) {
+        let count = 0;
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
+            if (dr === 0 && dc === 0) continue;
+            const r = row + dr;
+            const c = col + dc;
+            if (r >= 0 && r < rows && c >= 0 && c < cols && newBoard[r][c].isMine) {
+              count++;
+            }
+          }
+        }
+        newBoard[row][col].neighborMines = count;
+      }
+    }
+  }
+
+  return newBoard;
+}
+
+/**
+ * Place mines with seeded randomness for daily challenges
+ */
+export function placeMinesSeeded(
+  board: Cell[][],
+  mineCount: number,
+  firstClickRow: number,
+  firstClickCol: number,
+  seed: number
+): Cell[][] {
+  const rows = board.length;
+  const cols = board[0].length;
+  const newBoard = board.map(row => row.map(cell => ({ ...cell })));
+  const rng = new SeededRandom(seed);
+
+  let minesPlaced = 0;
+  const safeZone = new Set<string>();
+
+  // Create safe zone around first click (3x3 area)
+  for (let dr = -1; dr <= 1; dr++) {
+    for (let dc = -1; dc <= 1; dc++) {
+      const r = firstClickRow + dr;
+      const c = firstClickCol + dc;
+      if (r >= 0 && r < rows && c >= 0 && c < cols) {
+        safeZone.add(`${r},${c}`);
+      }
+    }
+  }
+
+  while (minesPlaced < mineCount) {
+    const row = rng.nextInt(0, rows);
+    const col = rng.nextInt(0, cols);
     const key = `${row},${col}`;
 
     if (!newBoard[row][col].isMine && !safeZone.has(key)) {

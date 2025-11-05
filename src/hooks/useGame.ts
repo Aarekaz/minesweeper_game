@@ -3,6 +3,7 @@ import { Cell, GameConfig, GameStatus, GameStats, Difficulty } from '../types/ga
 import {
   createBoard,
   placeMines,
+  placeMinesSeeded,
   revealCell,
   revealAllMines,
   toggleFlag,
@@ -24,10 +25,11 @@ const MAX_UNDO_HISTORY = 10;
 interface UseGameOptions {
   onSound?: (type: 'click' | 'flag' | 'reveal' | 'explosion' | 'victory' | 'combo', options?: { comboLevel?: number }) => void;
   savedState?: SavedGameState | null;
+  seed?: number; // For daily challenges
 }
 
 export function useGame(config: GameConfig, difficulty: Difficulty, options?: UseGameOptions) {
-  const { onSound, savedState } = options || {};
+  const { onSound, savedState, seed } = options || {};
   const [board, setBoard] = useState<Cell[][]>(() => savedState?.board || createBoard(config));
   const [gameStatus, setGameStatus] = useState<GameStatus>(savedState?.gameStatus || 'idle');
   const [minesPlaced, setMinesPlaced] = useState(savedState?.minesPlaced || false);
@@ -198,7 +200,9 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
 
       // First click - place mines and start game
       if (!minesPlaced) {
-        const newBoard = placeMines(board, config.mines, row, col);
+        const newBoard = seed !== undefined
+          ? placeMinesSeeded(board, config.mines, row, col, seed)
+          : placeMines(board, config.mines, row, col);
         const revealedBoard = revealCell(newBoard, row, col);
         setBoard(revealedBoard);
         setMinesPlaced(true);

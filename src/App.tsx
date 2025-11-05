@@ -6,6 +6,12 @@ import { useTheme } from './hooks/useTheme';
 import { useAchievements } from './hooks/useAchievements';
 import { loadGameState, SavedGameState } from './utils/gameState';
 import { countFlags } from './utils/gameLogic';
+import {
+  getTodayChallenge,
+  loadDailyStats,
+  completeTodayChallenge,
+  incrementAttempts,
+} from './utils/dailyChallengeStorage';
 import Header from './components/Header';
 import Board from './components/Board';
 import DifficultySelector from './components/DifficultySelector';
@@ -13,6 +19,7 @@ import StatsModal from './components/StatsModal';
 import SettingsModal from './components/SettingsModal';
 import AchievementsModal from './components/AchievementsModal';
 import AchievementNotification from './components/AchievementNotification';
+import DailyChallengeModal from './components/DailyChallengeModal';
 import './App.css';
 
 function App() {
@@ -22,8 +29,11 @@ function App() {
   const [showStats, setShowStats] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
+  const [showDailyChallenge, setShowDailyChallenge] = useState(false);
   const [savedGameState, setSavedGameState] = useState<SavedGameState | null>(null);
   const [showContinuePrompt, setShowContinuePrompt] = useState(false);
+  const [isDailyChallenge, setIsDailyChallenge] = useState(false);
+  const [dailySeed, setDailySeed] = useState<number | undefined>(undefined);
 
   const { playSound, toggleSound, setVolume, soundEnabled, volume} = useSoundEffects();
   const { currentTheme, setTheme, themes } = useTheme();
@@ -65,7 +75,11 @@ function App() {
   } = useGame(
     savedGameState?.config || config,
     savedGameState?.difficulty || difficulty,
-    { onSound: playSound, savedState: showContinuePrompt ? null : savedGameState }
+    {
+      onSound: playSound,
+      savedState: showContinuePrompt ? null : savedGameState,
+      seed: dailySeed
+    }
   );
 
   const handleContinueGame = () => {
@@ -90,6 +104,16 @@ function App() {
     setTimeout(resetGame, 0);
   };
 
+  const handleStartDailyChallenge = () => {
+    const challenge = getTodayChallenge();
+    setIsDailyChallenge(true);
+    setDailySeed(challenge.seed);
+    setDifficulty('intermediate');
+    setConfig(challenge.config);
+    setShowDailyChallenge(false);
+    incrementAttempts();
+    setTimeout(resetGame, 0);
+  };
 
   // Prevent context menu on the entire app
   useEffect(() => {
@@ -140,6 +164,15 @@ function App() {
     }
   }, [gameStatus, difficulty, time, maxCombo, board, updateProgress]);
 
+  // Track daily challenge completion
+  useEffect(() => {
+    if (isDailyChallenge && gameStatus === 'won') {
+      completeTodayChallenge(time);
+      setIsDailyChallenge(false);
+      setDailySeed(undefined);
+    }
+  }, [isDailyChallenge, gameStatus, time]);
+
   return (
     <div className="app">
       <div className="app-container">
@@ -154,6 +187,7 @@ function App() {
           onDifficultyChange={() => setShowDifficultySelector(true)}
           onStatsClick={() => setShowStats(true)}
           onAchievementsClick={() => setShowAchievements(true)}
+          onDailyChallengeClick={() => setShowDailyChallenge(true)}
           onSettingsClick={() => setShowSettings(true)}
           onPauseClick={togglePause}
           onUndo={undo}
@@ -282,6 +316,15 @@ function App() {
           totalCount={getTotalCount()}
           completionPercentage={getCompletionPercentage()}
           onClose={() => setShowAchievements(false)}
+        />
+      )}
+
+      {showDailyChallenge && (
+        <DailyChallengeModal
+          challenge={getTodayChallenge()}
+          stats={loadDailyStats()}
+          onStart={handleStartDailyChallenge}
+          onClose={() => setShowDailyChallenge(false)}
         />
       )}
 

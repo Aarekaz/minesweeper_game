@@ -12,6 +12,7 @@ interface HeaderProps {
   onDifficultyChange: () => void;
   onStatsClick: () => void;
   onAchievementsClick: () => void;
+  onDailyChallengeClick: () => void;
   onSettingsClick: () => void;
   onPauseClick?: () => void;
   onUndo?: () => void;
@@ -27,6 +28,7 @@ const Header: React.FC<HeaderProps> = ({
   onDifficultyChange,
   onStatsClick,
   onAchievementsClick,
+  onDailyChallengeClick,
   onSettingsClick,
   onPauseClick,
   onUndo,
@@ -83,6 +85,9 @@ const Header: React.FC<HeaderProps> = ({
         </button>
         <button className="icon-button" onClick={onAchievementsClick} title="Achievements">
           🏆
+        </button>
+        <button className="icon-button" onClick={onDailyChallengeClick} title="Daily Challenge">
+          📅
         </button>
         <button className="icon-button" onClick={onDifficultyChange} title="Change Difficulty">
           🎚️
