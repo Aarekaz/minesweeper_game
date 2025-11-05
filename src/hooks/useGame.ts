@@ -54,7 +54,9 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
 
   const saveToHistory = useCallback(() => {
     setHistory(prev => {
-      const newHistory = [...prev, { board, time, combo }];
+      // Create a deep copy of the board to avoid reference issues
+      const boardCopy = board.map(row => row.map(cell => ({ ...cell })));
+      const newHistory = [...prev, { board: boardCopy, time, combo }];
       // Keep only the last MAX_UNDO_HISTORY states
       if (newHistory.length > MAX_UNDO_HISTORY) {
         return newHistory.slice(-MAX_UNDO_HISTORY);
@@ -242,7 +244,7 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
         }
       }
     },
-    [board, gameStatus, minesPlaced, config.mines, time, incrementCombo, resetCombo, isPaused, difficulty, saveToHistory, onSound]
+    [board, gameStatus, minesPlaced, config.mines, time, incrementCombo, resetCombo, isPaused, difficulty, saveToHistory, onSound, seed]
   );
 
   const handleCellRightClick = useCallback(
