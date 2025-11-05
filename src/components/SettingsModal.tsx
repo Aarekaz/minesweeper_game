@@ -1,19 +1,26 @@
 import React from 'react';
+import { ThemeName } from '../hooks/useTheme';
 import './SettingsModal.css';
 
 interface SettingsModalProps {
   soundEnabled: boolean;
   volume: number;
+  currentTheme: ThemeName;
+  themes: ThemeName[];
   onToggleSound: () => void;
   onVolumeChange: (volume: number) => void;
+  onThemeChange: (theme: ThemeName) => void;
   onClose: () => void;
 }
 
 const SettingsModal: React.FC<SettingsModalProps> = ({
   soundEnabled,
   volume,
+  currentTheme,
+  themes,
   onToggleSound,
   onVolumeChange,
+  onThemeChange,
   onClose,
 }) => {
   return (
@@ -59,6 +66,25 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               </div>
             </div>
           )}
+
+          <div className="setting-item">
+            <div className="setting-label">
+              <span className="setting-icon">🎨</span>
+              <span>Theme</span>
+            </div>
+            <div className="theme-selector">
+              {themes.map((theme) => (
+                <button
+                  key={theme}
+                  className={`theme-option ${currentTheme === theme ? 'active' : ''}`}
+                  onClick={() => onThemeChange(theme)}
+                  title={`Switch to ${theme} theme`}
+                >
+                  {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <div className="setting-section">
             <h3>Keyboard Shortcuts</h3>

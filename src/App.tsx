@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Difficulty, GameConfig, DIFFICULTY_CONFIGS } from './types/game';
 import { useGame } from './hooks/useGame';
 import { useSoundEffects } from './hooks/useSoundEffects';
+import { useTheme } from './hooks/useTheme';
 import { loadGameState, SavedGameState } from './utils/gameState';
 import Header from './components/Header';
 import Board from './components/Board';
@@ -20,6 +21,7 @@ function App() {
   const [showContinuePrompt, setShowContinuePrompt] = useState(false);
 
   const { playSound, toggleSound, setVolume, soundEnabled, volume} = useSoundEffects();
+  const { currentTheme, setTheme, themes } = useTheme();
 
   // Check for saved game on mount
   useEffect(() => {
@@ -235,8 +237,11 @@ function App() {
         <SettingsModal
           soundEnabled={soundEnabled}
           volume={volume}
+          currentTheme={currentTheme}
+          themes={themes}
           onToggleSound={toggleSound}
           onVolumeChange={setVolume}
+          onThemeChange={setTheme}
           onClose={() => setShowSettings(false)}
         />
       )}
