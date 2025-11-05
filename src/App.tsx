@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Difficulty, GameConfig, DIFFICULTY_CONFIGS } from './types/game';
 import { useGame } from './hooks/useGame';
+import { useSoundEffects } from './hooks/useSoundEffects';
 import Header from './components/Header';
 import Board from './components/Board';
 import DifficultySelector from './components/DifficultySelector';
 import StatsModal from './components/StatsModal';
+import SettingsModal from './components/SettingsModal';
 import './App.css';
 
 function App() {
@@ -12,6 +14,9 @@ function App() {
   const [config, setConfig] = useState<GameConfig>(DIFFICULTY_CONFIGS.beginner);
   const [showDifficultySelector, setShowDifficultySelector] = useState(false);
   const [showStats, setShowStats] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+
+  const { playSound, toggleSound, setVolume, soundEnabled, volume } = useSoundEffects();
 
   const {
     board,
@@ -29,7 +34,7 @@ function App() {
     handleCellClick,
     handleCellRightClick,
     handleCellMiddleClick,
-  } = useGame(config, difficulty);
+  } = useGame(config, difficulty, { onSound: playSound });
 
 
   const handleDifficultyChange = (newDifficulty: Difficulty, newConfig: GameConfig) => {
@@ -89,6 +94,7 @@ function App() {
           onReset={resetGame}
           onDifficultyChange={() => setShowDifficultySelector(true)}
           onStatsClick={() => setShowStats(true)}
+          onSettingsClick={() => setShowSettings(true)}
           onPauseClick={togglePause}
           onUndo={undo}
         />
@@ -173,6 +179,16 @@ function App() {
           stats={stats}
           currentDifficulty={difficulty}
           onClose={() => setShowStats(false)}
+        />
+      )}
+
+      {showSettings && (
+        <SettingsModal
+          soundEnabled={soundEnabled}
+          volume={volume}
+          onToggleSound={toggleSound}
+          onVolumeChange={setVolume}
+          onClose={() => setShowSettings(false)}
         />
       )}
     </div>

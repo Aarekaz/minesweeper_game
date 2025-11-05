@@ -20,7 +20,12 @@ interface BoardHistory {
 
 const MAX_UNDO_HISTORY = 10;
 
-export function useGame(config: GameConfig, difficulty: Difficulty) {
+interface UseGameOptions {
+  onSound?: (type: 'click' | 'flag' | 'reveal' | 'explosion' | 'victory' | 'combo', options?: { comboLevel?: number }) => void;
+}
+
+export function useGame(config: GameConfig, difficulty: Difficulty, options?: UseGameOptions) {
+  const { onSound } = options || {};
   const [board, setBoard] = useState<Cell[][]>(() => createBoard(config));
   const [gameStatus, setGameStatus] = useState<GameStatus>('idle');
   const [minesPlaced, setMinesPlaced] = useState(false);
@@ -94,6 +99,12 @@ export function useGame(config: GameConfig, difficulty: Difficulty) {
     setCombo(prev => {
       const newCombo = prev + 1;
       setMaxCombo(max => Math.max(max, newCombo));
+
+      // Play combo sound if combo is above 1
+      if (newCombo > 1) {
+        onSound?.('combo', { comboLevel: Math.min(newCombo, 10) });
+      }
+
       return newCombo;
     });
 
@@ -106,7 +117,7 @@ export function useGame(config: GameConfig, difficulty: Difficulty) {
     comboTimerRef.current = window.setTimeout(() => {
       setCombo(0);
     }, 2000);
-  }, []);
+  }, [onSound]);
 
   const resetCombo = useCallback(() => {
     setCombo(0);
@@ -162,6 +173,8 @@ export function useGame(config: GameConfig, difficulty: Difficulty) {
 
       // Regular click
       if (cell.state === 'hidden' || cell.state === 'questioned') {
+        onSound?.('click');
+
         if (cell.isMine) {
           // Game over - hit a mine
           const revealedBoard = revealAllMines(board);
@@ -169,9 +182,11 @@ export function useGame(config: GameConfig, difficulty: Difficulty) {
           setGameStatus('lost');
           setStats(prevStats => updateStats(prevStats, difficulty, false, time));
           resetCombo();
+          onSound?.('explosion');
         } else {
           const newBoard = revealCell(board, row, col);
           setBoard(newBoard);
+          onSound?.('reveal');
 
           // Increment combo for successful reveal
           incrementCombo();
@@ -180,11 +195,12 @@ export function useGame(config: GameConfig, difficulty: Difficulty) {
           if (checkWin(newBoard)) {
             setGameStatus('won');
             setStats(prevStats => updateStats(prevStats, difficulty, true, time));
+            onSound?.('victory');
           }
         }
       }
     },
-    [board, gameStatus, minesPlaced, config.mines, time, incrementCombo, resetCombo, isPaused, difficulty, saveToHistory]
+    [board, gameStatus, minesPlaced, config.mines, time, incrementCombo, resetCombo, isPaused, difficulty, saveToHistory, onSound]
   );
 
   const handleCellRightClick = useCallback(
@@ -193,6 +209,7 @@ export function useGame(config: GameConfig, difficulty: Difficulty) {
         return;
       }
 
+      onSound?.('flag');
       const newBoard = toggleFlag(board, row, col);
       setBoard(newBoard);
 
@@ -205,9 +222,10 @@ export function useGame(config: GameConfig, difficulty: Difficulty) {
       if (minesPlaced && checkWin(newBoard)) {
         setGameStatus('won');
         setStats(prevStats => updateStats(prevStats, difficulty, true, time));
+        onSound?.('victory');
       }
     },
-    [board, gameStatus, minesPlaced, config.mines, time, isPaused, difficulty]
+    [board, gameStatus, minesPlaced, config.mines, time, isPaused, difficulty, onSound]
   );
 
   const handleCellMiddleClick = useCallback(
@@ -239,17 +257,20 @@ export function useGame(config: GameConfig, difficulty: Difficulty) {
         setBoard(revealedBoard);
         setGameStatus('lost');
         setStats(prevStats => updateStats(prevStats, difficulty, false, time));
+        onSound?.('explosion');
       } else {
         setBoard(newBoard);
+        onSound?.('reveal');
 
         // Check win condition
         if (checkWin(newBoard)) {
           setGameStatus('won');
           setStats(prevStats => updateStats(prevStats, difficulty, true, time));
+          onSound?.('victory');
         }
       }
     },
-    [board, gameStatus, minesPlaced, config.mines, time, isPaused, difficulty]
+    [board, gameStatus, minesPlaced, config.mines, time, isPaused, difficulty, onSound]
   );
 
   const canUndo = history.length > 0 && gameStatus === 'playing' && !isPaused;
