@@ -11,6 +11,7 @@ import {
   chordReveal,
 } from '../utils/gameLogic';
 import { loadStats, saveStats, updateStats } from '../utils/storage';
+import { saveGameState, clearSavedGame, SavedGameState } from '../utils/gameState';
 
 interface BoardHistory {
   board: Cell[][];
@@ -22,21 +23,23 @@ const MAX_UNDO_HISTORY = 10;
 
 interface UseGameOptions {
   onSound?: (type: 'click' | 'flag' | 'reveal' | 'explosion' | 'victory' | 'combo', options?: { comboLevel?: number }) => void;
+  savedState?: SavedGameState | null;
 }
 
 export function useGame(config: GameConfig, difficulty: Difficulty, options?: UseGameOptions) {
-  const { onSound } = options || {};
-  const [board, setBoard] = useState<Cell[][]>(() => createBoard(config));
-  const [gameStatus, setGameStatus] = useState<GameStatus>('idle');
-  const [minesPlaced, setMinesPlaced] = useState(false);
-  const [time, setTime] = useState(0);
+  const { onSound, savedState } = options || {};
+  const [board, setBoard] = useState<Cell[][]>(() => savedState?.board || createBoard(config));
+  const [gameStatus, setGameStatus] = useState<GameStatus>(savedState?.gameStatus || 'idle');
+  const [minesPlaced, setMinesPlaced] = useState(savedState?.minesPlaced || false);
+  const [time, setTime] = useState(savedState?.time || 0);
   const [stats, setStats] = useState<GameStats>(loadStats);
-  const [combo, setCombo] = useState(0);
-  const [maxCombo, setMaxCombo] = useState(0);
+  const [combo, setCombo] = useState(savedState?.combo || 0);
+  const [maxCombo, setMaxCombo] = useState(savedState?.maxCombo || 0);
   const [isPaused, setIsPaused] = useState(false);
   const [history, setHistory] = useState<BoardHistory[]>([]);
   const timerRef = useRef<number | null>(null);
   const comboTimerRef = useRef<number | null>(null);
+  const autoSaveIntervalRef = useRef<number | null>(null);
 
   const flagCount = countFlags(board);
   const remainingMines = config.mines - flagCount;
@@ -94,6 +97,41 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
   useEffect(() => {
     saveStats(stats);
   }, [stats]);
+
+  // Auto-save game state when playing
+  useEffect(() => {
+    if (gameStatus === 'playing' && !isPaused) {
+      // Save every 10 seconds
+      autoSaveIntervalRef.current = window.setInterval(() => {
+        saveGameState({
+          board,
+          gameStatus,
+          minesPlaced,
+          time,
+          combo,
+          maxCombo,
+          difficulty,
+          config,
+        });
+      }, 10000);
+    } else {
+      if (autoSaveIntervalRef.current !== null) {
+        clearInterval(autoSaveIntervalRef.current);
+        autoSaveIntervalRef.current = null;
+      }
+    }
+
+    // Clear saved game when game ends
+    if (gameStatus === 'won' || gameStatus === 'lost') {
+      clearSavedGame();
+    }
+
+    return () => {
+      if (autoSaveIntervalRef.current !== null) {
+        clearInterval(autoSaveIntervalRef.current);
+      }
+    };
+  }, [gameStatus, isPaused, board, minesPlaced, time, combo, maxCombo, difficulty, config]);
 
   const incrementCombo = useCallback(() => {
     setCombo(prev => {

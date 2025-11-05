@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Difficulty, GameConfig, DIFFICULTY_CONFIGS } from './types/game';
 import { useGame } from './hooks/useGame';
 import { useSoundEffects } from './hooks/useSoundEffects';
+import { loadGameState, SavedGameState } from './utils/gameState';
 import Header from './components/Header';
 import Board from './components/Board';
 import DifficultySelector from './components/DifficultySelector';
@@ -15,8 +16,19 @@ function App() {
   const [showDifficultySelector, setShowDifficultySelector] = useState(false);
   const [showStats, setShowStats] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [savedGameState, setSavedGameState] = useState<SavedGameState | null>(null);
+  const [showContinuePrompt, setShowContinuePrompt] = useState(false);
 
-  const { playSound, toggleSound, setVolume, soundEnabled, volume } = useSoundEffects();
+  const { playSound, toggleSound, setVolume, soundEnabled, volume} = useSoundEffects();
+
+  // Check for saved game on mount
+  useEffect(() => {
+    const saved = loadGameState();
+    if (saved) {
+      setSavedGameState(saved);
+      setShowContinuePrompt(true);
+    }
+  }, []);
 
   const {
     board,
@@ -34,7 +46,24 @@ function App() {
     handleCellClick,
     handleCellRightClick,
     handleCellMiddleClick,
-  } = useGame(config, difficulty, { onSound: playSound });
+  } = useGame(
+    savedGameState?.config || config,
+    savedGameState?.difficulty || difficulty,
+    { onSound: playSound, savedState: showContinuePrompt ? null : savedGameState }
+  );
+
+  const handleContinueGame = () => {
+    if (savedGameState) {
+      setDifficulty(savedGameState.difficulty);
+      setConfig(savedGameState.config);
+    }
+    setShowContinuePrompt(false);
+  };
+
+  const handleNewGame = () => {
+    setSavedGameState(null);
+    setShowContinuePrompt(false);
+  };
 
 
   const handleDifficultyChange = (newDifficulty: Difficulty, newConfig: GameConfig) => {
@@ -149,6 +178,26 @@ function App() {
               <div className="message-text">
                 <h2>Paused</h2>
                 <p>Press 'P' or click to resume</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Continue Game Prompt */}
+        {showContinuePrompt && savedGameState && (
+          <div className="game-message continue-prompt">
+            <div className="message-content">
+              <div className="message-text">
+                <h2>Continue Game?</h2>
+                <p>{savedGameState.difficulty.charAt(0).toUpperCase() + savedGameState.difficulty.slice(1)} • {Math.floor(savedGameState.time / 60)}:{(savedGameState.time % 60).toString().padStart(2, '0')}</p>
+                <div className="continue-buttons">
+                  <button className="continue-button primary" onClick={handleContinueGame}>
+                    Continue
+                  </button>
+                  <button className="continue-button secondary" onClick={handleNewGame}>
+                    New Game
+                  </button>
+                </div>
               </div>
             </div>
           </div>

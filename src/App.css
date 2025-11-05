@@ -87,6 +87,60 @@
   text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
 }
 
+.continue-prompt {
+  cursor: default;
+  border-color: rgba(96, 165, 250, 0.5);
+  box-shadow: 0 8px 60px rgba(96, 165, 250, 0.2);
+  animation: message-appear 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(30px);
+}
+
+.continue-prompt .message-text h2 {
+  color: #60a5fa;
+  margin-bottom: 8px;
+}
+
+.continue-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.continue-button {
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.continue-button.primary {
+  background: #60a5fa;
+  color: #0a0a0a;
+}
+
+.continue-button.primary:hover {
+  background: #93c5fd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.4);
+}
+
+.continue-button.secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.continue-button.secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
 .message-content {
   display: flex;
   flex-direction: column;
