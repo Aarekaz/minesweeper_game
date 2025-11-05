@@ -78,46 +78,37 @@ export function placeMines(
   return newBoard;
 }
 
-export function revealCell(board: Cell[][], row: number, col: number): Cell[][] {
-  const newBoard = board.map(r => r.map(c => ({ ...c })));
-
+// Helper function that mutates the board directly (more efficient)
+function revealCellMutate(board: Cell[][], row: number, col: number): void {
   if (
     row < 0 ||
     row >= board.length ||
     col < 0 ||
     col >= board[0].length ||
-    newBoard[row][col].state !== 'hidden'
+    board[row][col].state !== 'hidden'
   ) {
-    return newBoard;
+    return;
   }
 
-  newBoard[row][col].state = 'revealed';
+  board[row][col].state = 'revealed';
 
   // If cell has no neighbor mines, reveal adjacent cells recursively
-  if (newBoard[row][col].neighborMines === 0 && !newBoard[row][col].isMine) {
+  if (board[row][col].neighborMines === 0 && !board[row][col].isMine) {
     for (let dr = -1; dr <= 1; dr++) {
       for (let dc = -1; dc <= 1; dc++) {
         if (dr === 0 && dc === 0) continue;
         const newRow = row + dr;
         const newCol = col + dc;
-        if (
-          newRow >= 0 &&
-          newRow < board.length &&
-          newCol >= 0 &&
-          newCol < board[0].length &&
-          newBoard[newRow][newCol].state === 'hidden'
-        ) {
-          const result = revealCell(newBoard, newRow, newCol);
-          for (let i = 0; i < result.length; i++) {
-            for (let j = 0; j < result[i].length; j++) {
-              newBoard[i][j] = result[i][j];
-            }
-          }
-        }
+        revealCellMutate(board, newRow, newCol);
       }
     }
   }
+}
 
+// Public function that creates a single copy and uses the mutating helper
+export function revealCell(board: Cell[][], row: number, col: number): Cell[][] {
+  const newBoard = board.map(r => r.map(c => ({ ...c })));
+  revealCellMutate(newBoard, row, col);
   return newBoard;
 }
 

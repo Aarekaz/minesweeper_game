@@ -1,16 +1,20 @@
-import React from 'react';
-import { GameStats } from '../types/game';
+import React, { useState } from 'react';
+import { GameStats, Difficulty, DifficultyStats } from '../types/game';
 import './StatsModal.css';
 
 interface StatsModalProps {
   stats: GameStats;
+  currentDifficulty?: Difficulty;
   onClose: () => void;
 }
 
-const StatsModal: React.FC<StatsModalProps> = ({ stats, onClose }) => {
+const StatsModal: React.FC<StatsModalProps> = ({ stats, currentDifficulty = 'beginner', onClose }) => {
+  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>(currentDifficulty);
+  const diffStats: DifficultyStats = stats[selectedDifficulty];
+
   const winRate =
-    stats.gamesPlayed > 0
-      ? ((stats.gamesWon / stats.gamesPlayed) * 100).toFixed(1)
+    diffStats.gamesPlayed > 0
+      ? ((diffStats.gamesWon / diffStats.gamesPlayed) * 100).toFixed(1)
       : '0.0';
 
   const formatTime = (seconds: number): string => {
@@ -19,6 +23,13 @@ const StatsModal: React.FC<StatsModalProps> = ({ stats, onClose }) => {
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
+
+  const difficulties: Array<{ key: Difficulty; label: string }> = [
+    { key: 'beginner', label: 'Beginner' },
+    { key: 'intermediate', label: 'Intermediate' },
+    { key: 'expert', label: 'Expert' },
+    { key: 'custom', label: 'Custom' },
+  ];
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -30,22 +41,35 @@ const StatsModal: React.FC<StatsModalProps> = ({ stats, onClose }) => {
           </button>
         </div>
 
+        {/* Difficulty tabs */}
+        <div className="difficulty-tabs">
+          {difficulties.map((diff) => (
+            <button
+              key={diff.key}
+              className={`difficulty-tab ${selectedDifficulty === diff.key ? 'active' : ''}`}
+              onClick={() => setSelectedDifficulty(diff.key)}
+            >
+              {diff.label}
+            </button>
+          ))}
+        </div>
+
         <div className="stats-grid">
           <div className="stat-card">
             <div className="stat-icon">🎮</div>
-            <div className="stat-number">{stats.gamesPlayed}</div>
+            <div className="stat-number">{diffStats.gamesPlayed}</div>
             <div className="stat-label">Games Played</div>
           </div>
 
           <div className="stat-card">
             <div className="stat-icon">🏆</div>
-            <div className="stat-number">{stats.gamesWon}</div>
+            <div className="stat-number">{diffStats.gamesWon}</div>
             <div className="stat-label">Games Won</div>
           </div>
 
           <div className="stat-card">
             <div className="stat-icon">💔</div>
-            <div className="stat-number">{stats.gamesLost}</div>
+            <div className="stat-number">{diffStats.gamesLost}</div>
             <div className="stat-label">Games Lost</div>
           </div>
 
@@ -57,24 +81,24 @@ const StatsModal: React.FC<StatsModalProps> = ({ stats, onClose }) => {
 
           <div className="stat-card">
             <div className="stat-icon">⚡</div>
-            <div className="stat-number">{formatTime(stats.bestTime)}</div>
+            <div className="stat-number">{formatTime(diffStats.bestTime)}</div>
             <div className="stat-label">Best Time</div>
           </div>
 
           <div className="stat-card">
             <div className="stat-icon">🔥</div>
-            <div className="stat-number">{stats.currentStreak}</div>
+            <div className="stat-number">{diffStats.currentStreak}</div>
             <div className="stat-label">Current Streak</div>
           </div>
 
           <div className="stat-card">
             <div className="stat-icon">⭐</div>
-            <div className="stat-number">{stats.longestStreak}</div>
+            <div className="stat-number">{diffStats.longestStreak}</div>
             <div className="stat-label">Longest Streak</div>
           </div>
         </div>
 
-        {stats.gamesPlayed === 0 && (
+        {diffStats.gamesPlayed === 0 && (
           <div className="empty-state">
             <p>Start playing to track your statistics!</p>
           </div>

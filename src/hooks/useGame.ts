@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Cell, GameConfig, GameStatus, GameStats } from '../types/game';
+import { Cell, GameConfig, GameStatus, GameStats, Difficulty } from '../types/game';
 import {
   createBoard,
   placeMines,
@@ -12,7 +12,15 @@ import {
 } from '../utils/gameLogic';
 import { loadStats, saveStats, updateStats } from '../utils/storage';
 
-export function useGame(config: GameConfig) {
+interface BoardHistory {
+  board: Cell[][];
+  time: number;
+  combo: number;
+}
+
+const MAX_UNDO_HISTORY = 10;
+
+export function useGame(config: GameConfig, difficulty: Difficulty) {
   const [board, setBoard] = useState<Cell[][]>(() => createBoard(config));
   const [gameStatus, setGameStatus] = useState<GameStatus>('idle');
   const [minesPlaced, setMinesPlaced] = useState(false);
@@ -20,15 +28,46 @@ export function useGame(config: GameConfig) {
   const [stats, setStats] = useState<GameStats>(loadStats);
   const [combo, setCombo] = useState(0);
   const [maxCombo, setMaxCombo] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [history, setHistory] = useState<BoardHistory[]>([]);
   const timerRef = useRef<number | null>(null);
   const comboTimerRef = useRef<number | null>(null);
 
   const flagCount = countFlags(board);
   const remainingMines = config.mines - flagCount;
 
+  const togglePause = useCallback(() => {
+    if (gameStatus === 'playing') {
+      setIsPaused(prev => !prev);
+    }
+  }, [gameStatus]);
+
+  const saveToHistory = useCallback(() => {
+    setHistory(prev => {
+      const newHistory = [...prev, { board, time, combo }];
+      // Keep only the last MAX_UNDO_HISTORY states
+      if (newHistory.length > MAX_UNDO_HISTORY) {
+        return newHistory.slice(-MAX_UNDO_HISTORY);
+      }
+      return newHistory;
+    });
+  }, [board, time, combo]);
+
+  const undo = useCallback(() => {
+    if (history.length === 0 || gameStatus !== 'playing' || isPaused) {
+      return;
+    }
+
+    const previousState = history[history.length - 1];
+    setBoard(previousState.board.map(row => row.map(cell => ({ ...cell }))));
+    setTime(previousState.time);
+    setCombo(previousState.combo);
+    setHistory(prev => prev.slice(0, -1));
+  }, [history, gameStatus, isPaused]);
+
   // Timer effect
   useEffect(() => {
-    if (gameStatus === 'playing') {
+    if (gameStatus === 'playing' && !isPaused) {
       timerRef.current = window.setInterval(() => {
         setTime(t => t + 1);
       }, 1000);
@@ -44,7 +83,7 @@ export function useGame(config: GameConfig) {
         clearInterval(timerRef.current);
       }
     };
-  }, [gameStatus]);
+  }, [gameStatus, isPaused]);
 
   // Save stats when they change
   useEffect(() => {
@@ -84,6 +123,8 @@ export function useGame(config: GameConfig) {
     setTime(0);
     setCombo(0);
     setMaxCombo(0);
+    setIsPaused(false);
+    setHistory([]);
     if (timerRef.current !== null) {
       clearInterval(timerRef.current);
       timerRef.current = null;
@@ -96,7 +137,7 @@ export function useGame(config: GameConfig) {
 
   const handleCellClick = useCallback(
     (row: number, col: number) => {
-      if (gameStatus === 'won' || gameStatus === 'lost') {
+      if (gameStatus === 'won' || gameStatus === 'lost' || isPaused) {
         return;
       }
 
@@ -116,6 +157,9 @@ export function useGame(config: GameConfig) {
         return;
       }
 
+      // Save state before making changes
+      saveToHistory();
+
       // Regular click
       if (cell.state === 'hidden' || cell.state === 'questioned') {
         if (cell.isMine) {
@@ -123,7 +167,7 @@ export function useGame(config: GameConfig) {
           const revealedBoard = revealAllMines(board);
           setBoard(revealedBoard);
           setGameStatus('lost');
-          setStats(prevStats => updateStats(prevStats, false, time));
+          setStats(prevStats => updateStats(prevStats, difficulty, false, time));
           resetCombo();
         } else {
           const newBoard = revealCell(board, row, col);
@@ -135,17 +179,17 @@ export function useGame(config: GameConfig) {
           // Check win condition
           if (checkWin(newBoard)) {
             setGameStatus('won');
-            setStats(prevStats => updateStats(prevStats, true, time));
+            setStats(prevStats => updateStats(prevStats, difficulty, true, time));
           }
         }
       }
     },
-    [board, gameStatus, minesPlaced, config.mines, time, incrementCombo, resetCombo]
+    [board, gameStatus, minesPlaced, config.mines, time, incrementCombo, resetCombo, isPaused, difficulty, saveToHistory]
   );
 
   const handleCellRightClick = useCallback(
     (row: number, col: number) => {
-      if (gameStatus === 'won' || gameStatus === 'lost') {
+      if (gameStatus === 'won' || gameStatus === 'lost' || isPaused) {
         return;
       }
 
@@ -160,15 +204,15 @@ export function useGame(config: GameConfig) {
       // Check win condition with flags
       if (minesPlaced && checkWin(newBoard)) {
         setGameStatus('won');
-        setStats(prevStats => updateStats(prevStats, true, time));
+        setStats(prevStats => updateStats(prevStats, difficulty, true, time));
       }
     },
-    [board, gameStatus, minesPlaced, config.mines, time]
+    [board, gameStatus, minesPlaced, config.mines, time, isPaused, difficulty]
   );
 
   const handleCellMiddleClick = useCallback(
     (row: number, col: number) => {
-      if (gameStatus === 'won' || gameStatus === 'lost' || !minesPlaced) {
+      if (gameStatus === 'won' || gameStatus === 'lost' || !minesPlaced || isPaused) {
         return;
       }
 
@@ -194,19 +238,21 @@ export function useGame(config: GameConfig) {
         const revealedBoard = revealAllMines(newBoard);
         setBoard(revealedBoard);
         setGameStatus('lost');
-        setStats(prevStats => updateStats(prevStats, false, time));
+        setStats(prevStats => updateStats(prevStats, difficulty, false, time));
       } else {
         setBoard(newBoard);
 
         // Check win condition
         if (checkWin(newBoard)) {
           setGameStatus('won');
-          setStats(prevStats => updateStats(prevStats, true, time));
+          setStats(prevStats => updateStats(prevStats, difficulty, true, time));
         }
       }
     },
-    [board, gameStatus, minesPlaced, config.mines, time]
+    [board, gameStatus, minesPlaced, config.mines, time, isPaused, difficulty]
   );
+
+  const canUndo = history.length > 0 && gameStatus === 'playing' && !isPaused;
 
   return {
     board,
@@ -216,6 +262,10 @@ export function useGame(config: GameConfig) {
     stats,
     combo,
     maxCombo,
+    isPaused,
+    canUndo,
+    togglePause,
+    undo,
     resetGame,
     handleCellClick,
     handleCellRightClick,

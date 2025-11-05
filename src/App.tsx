@@ -21,11 +21,15 @@ function App() {
     stats,
     combo,
     maxCombo,
+    isPaused,
+    canUndo,
+    togglePause,
+    undo,
     resetGame,
     handleCellClick,
     handleCellRightClick,
     handleCellMiddleClick,
-  } = useGame(config);
+  } = useGame(config, difficulty);
 
 
   const handleDifficultyChange = (newDifficulty: Difficulty, newConfig: GameConfig) => {
@@ -48,6 +52,30 @@ function App() {
     };
   }, []);
 
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Pause (P key)
+      if (e.key === 'p' || e.key === 'P') {
+        if (gameStatus === 'playing') {
+          togglePause();
+        }
+      }
+
+      // Undo (Ctrl+Z or Cmd+Z)
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+        e.preventDefault();
+        if (canUndo) {
+          undo();
+        }
+      }
+    };
+    document.addEventListener('keydown', handleKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [gameStatus, togglePause, canUndo, undo]);
+
   return (
     <div className="app">
       <div className="app-container">
@@ -56,9 +84,13 @@ function App() {
           time={time}
           remainingMines={remainingMines}
           gameStatus={gameStatus}
+          isPaused={isPaused}
+          canUndo={canUndo}
           onReset={resetGame}
           onDifficultyChange={() => setShowDifficultySelector(true)}
           onStatsClick={() => setShowStats(true)}
+          onPauseClick={togglePause}
+          onUndo={undo}
         />
 
         <Board
@@ -104,6 +136,18 @@ function App() {
           </div>
         )}
 
+        {/* Pause Overlay */}
+        {isPaused && (
+          <div className="game-message pause-message" onClick={togglePause}>
+            <div className="message-content">
+              <div className="message-text">
+                <h2>Paused</h2>
+                <p>Press 'P' or click to resume</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Attribution link */}
         <a
           href="https://app.tembo.io/sign-up?utm_source=aarekaz&utm_id=aarekaz"
@@ -127,6 +171,7 @@ function App() {
       {showStats && (
         <StatsModal
           stats={stats}
+          currentDifficulty={difficulty}
           onClose={() => setShowStats(false)}
         />
       )}

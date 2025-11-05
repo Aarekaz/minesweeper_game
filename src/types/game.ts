@@ -16,13 +16,20 @@ export interface GameConfig {
   mines: number;
 }
 
-export interface GameStats {
+export interface DifficultyStats {
   gamesPlayed: number;
   gamesWon: number;
   gamesLost: number;
   bestTime: number;
   currentStreak: number;
   longestStreak: number;
+}
+
+export interface GameStats {
+  beginner: DifficultyStats;
+  intermediate: DifficultyStats;
+  expert: DifficultyStats;
+  custom: DifficultyStats;
 }
 
 export const DIFFICULTY_CONFIGS: Record<Difficulty, GameConfig> = {

@@ -6,18 +6,26 @@ interface HeaderProps {
   time: number;
   remainingMines: number;
   gameStatus: GameStatus;
+  isPaused?: boolean;
+  canUndo?: boolean;
   onReset: () => void;
   onDifficultyChange: () => void;
   onStatsClick: () => void;
+  onPauseClick?: () => void;
+  onUndo?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
   time,
   remainingMines,
   gameStatus,
+  isPaused = false,
+  canUndo = false,
   onReset,
   onDifficultyChange,
   onStatsClick,
+  onPauseClick,
+  onUndo,
 }) => {
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -72,6 +80,22 @@ const Header: React.FC<HeaderProps> = ({
         <button className="icon-button" onClick={onDifficultyChange} title="Change Difficulty">
           ⚙️
         </button>
+        {gameStatus === 'playing' && onPauseClick && (
+          <button className="icon-button" onClick={onPauseClick} title={isPaused ? "Resume (P)" : "Pause (P)"}>
+            {isPaused ? '▶️' : '⏸️'}
+          </button>
+        )}
+        {gameStatus === 'playing' && onUndo && (
+          <button
+            className="icon-button"
+            onClick={onUndo}
+            disabled={!canUndo}
+            title="Undo (Ctrl+Z)"
+            style={{ opacity: canUndo ? 1 : 0.3, cursor: canUndo ? 'pointer' : 'not-allowed' }}
+          >
+            ↩️
+          </button>
+        )}
       </div>
 
       <div className="header-stats">

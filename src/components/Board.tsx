@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Cell as CellType } from '../types/game';
 import Cell from './Cell';
+import { useKeyboardControls } from '../hooks/useKeyboardControls';
 import './Board.css';
 
 interface BoardProps {
@@ -21,12 +22,38 @@ const Board: React.FC<BoardProps> = ({
   const rows = board.length;
   const cols = board[0]?.length || 0;
 
+  // Keyboard controls
+  const { selectedCell } = useKeyboardControls({
+    rows,
+    cols,
+    onCellClick,
+    onCellRightClick,
+    gameOver,
+  });
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  // Listen for window resize events
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Calculate optimal cell size to fill screen while maintaining square cells
   const boardDimensions = useMemo(() => {
     const headerHeight = 120; // Space for floating header + margin
     const padding = 40; // Minimal padding around board
-    const availableHeight = window.innerHeight - headerHeight - padding;
-    const availableWidth = window.innerWidth - padding;
+    const availableHeight = windowSize.height - headerHeight - padding;
+    const availableWidth = windowSize.width - padding;
 
     // Calculate cell size based on available space, accounting for grid gaps
     const gapSize = 2; // Must match CSS gap value
@@ -47,7 +74,7 @@ const Board: React.FC<BoardProps> = ({
       height: `${rows * finalCellSize + totalGapHeight}px`,
       cellSize: `${finalCellSize}px`,
     };
-  }, [rows, cols]);
+  }, [rows, cols, windowSize]);
 
   return (
     <div
@@ -68,6 +95,7 @@ const Board: React.FC<BoardProps> = ({
             onRightClick={() => onCellRightClick(rowIndex, colIndex)}
             onMiddleClick={() => onCellMiddleClick(rowIndex, colIndex)}
             gameOver={gameOver}
+            isSelected={selectedCell?.row === rowIndex && selectedCell?.col === colIndex}
           />
         ))
       )}
