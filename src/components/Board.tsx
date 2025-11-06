@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { Cell as CellType } from '../types/game';
+import { Cell as CellType, GameStatus } from '../types/game';
 import Cell from './Cell';
 import { useKeyboardControls } from '../hooks/useKeyboardControls';
 import './Board.css';
@@ -9,7 +9,7 @@ interface BoardProps {
   onCellClick: (row: number, col: number) => void;
   onCellRightClick: (row: number, col: number) => void;
   onCellMiddleClick: (row: number, col: number) => void;
-  gameOver: boolean;
+  gameStatus: GameStatus;
 }
 
 const Board: React.FC<BoardProps> = ({
@@ -17,10 +17,11 @@ const Board: React.FC<BoardProps> = ({
   onCellClick,
   onCellRightClick,
   onCellMiddleClick,
-  gameOver,
+  gameStatus,
 }) => {
   const rows = board.length;
   const cols = board[0]?.length || 0;
+  const gameOver = gameStatus === 'won' || gameStatus === 'lost';
 
   // Keyboard controls
   const { selectedCell } = useKeyboardControls({
@@ -113,7 +114,7 @@ const Board: React.FC<BoardProps> = ({
             onClick={() => onCellClick(rowIndex, colIndex)}
             onRightClick={() => onCellRightClick(rowIndex, colIndex)}
             onMiddleClick={() => onCellMiddleClick(rowIndex, colIndex)}
-            gameOver={gameOver}
+            gameStatus={gameStatus}
             isSelected={selectedCell?.row === rowIndex && selectedCell?.col === colIndex}
           />
         ))

@@ -46,6 +46,34 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
   const flagCount = countFlags(board);
   const remainingMines = config.mines - flagCount;
 
+  // Reset game when config changes (for difficulty/grid size changes)
+  useEffect(() => {
+    // Only reset if the board dimensions don't match the config
+    // or if mines count changed (important for custom difficulty)
+    const currentRows = board.length;
+    const currentCols = board[0]?.length || 0;
+    const currentMines = board.flat().filter(cell => cell.isMine).length;
+
+    if (currentRows !== config.rows || currentCols !== config.cols || (minesPlaced && currentMines !== config.mines)) {
+      setBoard(createBoard(config));
+      setGameStatus('idle');
+      setMinesPlaced(false);
+      setTime(0);
+      setCombo(0);
+      setMaxCombo(0);
+      setIsPaused(false);
+      setHistory([]);
+      if (timerRef.current !== null) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+      if (comboTimerRef.current !== null) {
+        clearTimeout(comboTimerRef.current);
+        comboTimerRef.current = null;
+      }
+    }
+  }, [config.rows, config.cols, config.mines, minesPlaced]);
+
   const togglePause = useCallback(() => {
     if (gameStatus === 'playing') {
       setIsPaused(prev => !prev);

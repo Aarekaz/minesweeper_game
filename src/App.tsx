@@ -101,7 +101,6 @@ function App() {
     setConfig(newConfig);
     setShowDifficultySelector(false);
     // Reset will be called automatically by the useGame hook when config changes
-    setTimeout(resetGame, 0);
   };
 
   const handleStartDailyChallenge = () => {
@@ -112,7 +111,7 @@ function App() {
     setConfig(challenge.config);
     setShowDailyChallenge(false);
     incrementAttempts();
-    setTimeout(resetGame, 0);
+    // Reset will be called automatically by the useGame hook when config changes
   };
 
   // Prevent context menu on the entire app
@@ -198,7 +197,7 @@ function App() {
           onCellClick={handleCellClick}
           onCellRightClick={handleCellRightClick}
           onCellMiddleClick={handleCellMiddleClick}
-          gameOver={gameStatus === 'won' || gameStatus === 'lost'}
+          gameStatus={gameStatus}
         />
 
         {/* Combo Counter */}
