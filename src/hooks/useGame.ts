@@ -52,10 +52,10 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
     }
   }, [gameStatus]);
 
-  const saveToHistory = useCallback(() => {
+  const saveToHistory = useCallback((currentBoard: Cell[][]) => {
     setHistory(prev => {
       // Create a deep copy of the board to avoid reference issues
-      const boardCopy = board.map(row => row.map(cell => ({ ...cell })));
+      const boardCopy = currentBoard.map(row => row.map(cell => ({ ...cell })));
       const newHistory = [...prev, { board: boardCopy, time, combo }];
       // Keep only the last MAX_UNDO_HISTORY states
       if (newHistory.length > MAX_UNDO_HISTORY) {
@@ -63,7 +63,7 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
       }
       return newHistory;
     });
-  }, [board, time, combo]);
+  }, [time, combo]);
 
   const undo = useCallback(() => {
     if (history.length === 0 || gameStatus !== 'playing' || isPaused) {
@@ -213,7 +213,7 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
       }
 
       // Save state before making changes
-      saveToHistory();
+      saveToHistory(board);
 
       // Regular click
       if (cell.state === 'hidden' || cell.state === 'questioned') {
