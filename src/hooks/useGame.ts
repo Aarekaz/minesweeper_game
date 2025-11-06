@@ -204,12 +204,15 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
 
         // First click - place mines and start game
         if (!minesPlaced) {
+          // Play click sound immediately for first click
+          onSound?.('click');
           const newBoard = seed !== undefined
             ? placeMinesSeeded(currentBoard, config.mines, row, col, seed)
             : placeMines(currentBoard, config.mines, row, col);
           const revealedBoard = revealCell(newBoard, row, col);
           setMinesPlaced(true);
           setGameStatus('playing');
+          onSound?.('reveal');
           return revealedBoard;
         }
 
@@ -218,6 +221,7 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
 
         // Regular click
         if (cell.state === 'hidden' || cell.state === 'questioned') {
+          // Play click sound immediately
           onSound?.('click');
 
           if (cell.isMine) {
@@ -226,10 +230,12 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
             setGameStatus('lost');
             setStats(prevStats => updateStats(prevStats, difficulty, false, time));
             resetCombo();
+            // Play explosion sound immediately
             onSound?.('explosion');
             return revealedBoard;
           } else {
             const newBoard = revealCell(currentBoard, row, col);
+            // Play reveal sound immediately
             onSound?.('reveal');
 
             // Increment combo for successful reveal
@@ -239,6 +245,7 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
             if (checkWin(newBoard)) {
               setGameStatus('won');
               setStats(prevStats => updateStats(prevStats, difficulty, true, time));
+              // Play victory sound immediately
               onSound?.('victory');
             }
             return newBoard;
@@ -286,6 +293,9 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
         return;
       }
 
+      // Play click sound immediately
+      onSound?.('click');
+
       setBoard(currentBoard => {
         const newBoard = chordReveal(currentBoard, row, col);
 
@@ -309,15 +319,18 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
           const revealedBoard = revealAllMines(newBoard);
           setGameStatus('lost');
           setStats(prevStats => updateStats(prevStats, difficulty, false, time));
+          // Play explosion sound immediately
           onSound?.('explosion');
           return revealedBoard;
         } else {
+          // Play reveal sound immediately
           onSound?.('reveal');
 
           // Check win condition
           if (checkWin(newBoard)) {
             setGameStatus('won');
             setStats(prevStats => updateStats(prevStats, difficulty, true, time));
+            // Play victory sound immediately
             onSound?.('victory');
           }
           return newBoard;

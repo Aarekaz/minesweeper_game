@@ -6,10 +6,12 @@
   display: flex;
   gap: 8px;
   margin-bottom: 24px;
-  padding: 4px;
-  background: rgba(26, 26, 26, 0.6);
+  padding: 6px;
+  background: rgba(26, 26, 26, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .difficulty-tab {
@@ -17,24 +19,26 @@
   padding: 10px 16px;
   background: transparent;
   border: none;
-  color: #666666;
+  color: #777777;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 6px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 7px;
 }
 
 .difficulty-tab:hover {
-  background: rgba(96, 165, 250, 0.1);
-  color: #999999;
+  background: rgba(96, 165, 250, 0.15);
+  color: #aaaaaa;
 }
 
 .difficulty-tab.active {
-  background: rgba(96, 165, 250, 0.2);
+  background: rgba(96, 165, 250, 0.25);
   color: #60a5fa;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.2),
+              inset 0 1px 0 rgba(96, 165, 250, 0.1);
 }
 
 .stats-grid {
@@ -45,16 +49,22 @@
 }
 
 .stat-card {
-  background: rgba(26, 26, 26, 0.6);
+  background: rgba(26, 26, 26, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
   padding: 20px;
   text-align: center;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .stat-card:hover {
-  background: rgba(38, 38, 38, 0.7);
+  background: rgba(38, 38, 38, 0.8);
   border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .stat-icon {
@@ -75,10 +85,10 @@
 
 .stat-label {
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #666666;
+  letter-spacing: 1.2px;
+  color: #888888;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
