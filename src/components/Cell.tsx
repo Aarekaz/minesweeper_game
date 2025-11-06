@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Cell as CellType } from '../types/game';
+import { Cell as CellType, GameStatus } from '../types/game';
 import './Cell.css';
 
 interface CellProps {
@@ -7,7 +7,7 @@ interface CellProps {
   onClick: () => void;
   onRightClick: () => void;
   onMiddleClick: () => void;
-  gameOver: boolean;
+  gameStatus: GameStatus;
   isSelected?: boolean;
 }
 
@@ -16,9 +16,10 @@ const Cell: React.FC<CellProps> = ({
   onClick,
   onRightClick,
   onMiddleClick,
-  gameOver,
+  gameStatus,
   isSelected = false,
 }) => {
+  const gameOver = gameStatus === 'won' || gameStatus === 'lost';
   const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; color: string }>>([]);
   const [justRevealed, setJustRevealed] = useState(false);
   const [exploding, setExploding] = useState(false);
@@ -106,7 +107,8 @@ const Cell: React.FC<CellProps> = ({
     }
 
     if (cell.state === 'revealed') {
-      if (cell.isMine) {
+      // Only show mines when the game is lost, not when won
+      if (cell.isMine && gameStatus === 'lost') {
         return <span className="cell-mine">💣</span>;
       }
 
@@ -193,7 +195,7 @@ export default React.memo(Cell, (prevProps, nextProps) => {
     prevProps.cell.state === nextProps.cell.state &&
     prevProps.cell.isMine === nextProps.cell.isMine &&
     prevProps.cell.neighborMines === nextProps.cell.neighborMines &&
-    prevProps.gameOver === nextProps.gameOver &&
+    prevProps.gameStatus === nextProps.gameStatus &&
     prevProps.isSelected === nextProps.isSelected
   );
 });
