@@ -7,6 +7,9 @@ body {
   overflow: hidden;
   line-height: 1.5;
   color: #ffffff;
+  -webkit-tap-highlight-color: rgba(96, 165, 250, 0.3);
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
 }
 
 code {
@@ -15,6 +18,24 @@ code {
 
 * {
   box-sizing: border-box;
+}
+
+/* Touch-friendly interactive elements */
+button,
+a,
+[role="button"] {
+  -webkit-tap-highlight-color: rgba(96, 165, 250, 0.3);
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+/* Prevent text selection on tap (except inputs) */
+button,
+.cell {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 /* Scrollbar styling */

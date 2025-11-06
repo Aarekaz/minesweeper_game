@@ -187,19 +187,187 @@
 
 @media (max-width: 768px) {
   .achievements-modal {
-    max-width: 95vw;
+    max-width: calc(100% - 32px);
+  }
+
+  .achievements-summary {
+    padding: 20px;
+    margin-bottom: 20px;
+    gap: 14px;
+  }
+
+  .summary-label {
+    font-size: 13px;
+  }
+
+  .summary-value {
+    font-size: 18px;
+  }
+
+  .progress-bar {
+    height: 9px;
+  }
+
+  .progress-label {
+    font-size: 11px;
   }
 
   .achievements-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .achievement-card {
     flex-direction: row;
+    padding: 16px;
   }
 
   .achievement-card-icon {
     font-size: 32px;
+  }
+
+  .achievement-card-title {
+    font-size: 14px;
+  }
+
+  .achievement-card-description {
+    font-size: 12px;
+  }
+
+  .achievement-card-date {
+    font-size: 10px;
+  }
+
+  .achievement-progress-text {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .achievements-summary {
+    padding: 18px;
+  }
+
+  .achievements-grid {
+    gap: 10px;
+  }
+
+  .achievement-card {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .achievement-card-icon {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .achievements-modal {
+    max-width: calc(100% - 20px);
+  }
+
+  .achievements-summary {
+    padding: 16px;
+    margin-bottom: 16px;
+    gap: 12px;
+    border-radius: 10px;
+  }
+
+  .summary-label {
+    font-size: 12px;
+  }
+
+  .summary-value {
+    font-size: 17px;
+  }
+
+  .progress-bar {
+    height: 8px;
+  }
+
+  .progress-label {
+    font-size: 10px;
+  }
+
+  .achievements-grid {
+    gap: 10px;
+  }
+
+  .achievement-card {
+    padding: 14px;
+    gap: 12px;
+    border-radius: 10px;
+  }
+
+  .achievement-card-icon {
+    font-size: 28px;
+  }
+
+  .achievement-card-title {
+    font-size: 14px;
+    margin-bottom: 3px;
+  }
+
+  .achievement-card-description {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .achievement-card-date {
+    font-size: 10px;
+  }
+
+  .achievement-card-progress {
+    margin-top: 6px;
+  }
+
+  .achievement-progress-bar {
+    height: 3px;
+    margin-bottom: 3px;
+  }
+
+  .achievement-progress-text {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .achievements-modal {
+    max-width: calc(100% - 16px);
+  }
+
+  .achievements-summary {
+    padding: 14px;
+  }
+
+  .summary-label {
+    font-size: 11px;
+  }
+
+  .summary-value {
+    font-size: 16px;
+  }
+
+  .achievements-grid {
+    gap: 8px;
+  }
+
+  .achievement-card {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .achievement-card-icon {
+    font-size: 26px;
+  }
+
+  .achievement-card-title {
+    font-size: 13px;
+  }
+
+  .achievement-card-description {
+    font-size: 11px;
   }
 }
 

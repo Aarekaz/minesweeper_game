@@ -215,11 +215,23 @@
 
 @media (max-width: 768px) {
   .settings-modal {
-    max-width: 90vw;
+    max-width: calc(100% - 32px);
+  }
+
+  .settings-grid {
+    gap: 20px;
+  }
+
+  .setting-item {
+    padding: 14px;
+  }
+
+  .setting-label {
+    font-size: 14px;
   }
 
   .volume-slider {
-    width: 100px;
+    width: 120px;
   }
 
   .shortcuts-list {
@@ -230,5 +242,175 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
+  }
+}
+
+@media (max-width: 640px) {
+  .settings-grid {
+    gap: 18px;
+  }
+
+  .setting-item {
+    padding: 12px;
+  }
+
+  .setting-label {
+    font-size: 13px;
+    gap: 10px;
+  }
+
+  .setting-icon {
+    font-size: 18px;
+  }
+
+  .volume-slider {
+    width: 100px;
+  }
+
+  .setting-section h3 {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-modal {
+    max-width: calc(100% - 20px);
+  }
+
+  .settings-grid {
+    gap: 16px;
+  }
+
+  .setting-item {
+    padding: 12px;
+    border-radius: 6px;
+  }
+
+  .setting-label {
+    font-size: 13px;
+    gap: 8px;
+  }
+
+  .setting-icon {
+    font-size: 16px;
+  }
+
+  .toggle-button {
+    width: 46px;
+    height: 24px;
+  }
+
+  .toggle-slider {
+    width: 16px;
+    height: 16px;
+  }
+
+  .toggle-button.active .toggle-slider {
+    transform: translateX(22px);
+  }
+
+  .volume-control {
+    gap: 10px;
+  }
+
+  .volume-slider {
+    width: 90px;
+  }
+
+  .volume-value {
+    font-size: 12px;
+    min-width: 40px;
+  }
+
+  .theme-selector {
+    gap: 6px;
+  }
+
+  .theme-option {
+    padding: 7px 14px;
+    font-size: 12px;
+  }
+
+  .setting-section {
+    padding: 14px;
+  }
+
+  .setting-section h3 {
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+
+  .shortcuts-list {
+    gap: 7px;
+  }
+
+  .shortcut-item {
+    padding: 6px 0;
+  }
+
+  .shortcut-key {
+    font-size: 11px;
+    padding: 3px 7px;
+  }
+
+  .shortcut-desc {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .settings-grid {
+    gap: 14px;
+  }
+
+  .setting-item {
+    padding: 10px;
+  }
+
+  .setting-label {
+    font-size: 12px;
+  }
+
+  .setting-icon {
+    font-size: 15px;
+  }
+
+  .toggle-button {
+    width: 42px;
+    height: 22px;
+  }
+
+  .toggle-slider {
+    width: 14px;
+    height: 14px;
+  }
+
+  .toggle-button.active .toggle-slider {
+    transform: translateX(20px);
+  }
+
+  .volume-slider {
+    width: 80px;
+  }
+
+  .theme-option {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+
+  .setting-section {
+    padding: 12px;
+  }
+
+  .setting-section h3 {
+    font-size: 11px;
+  }
+
+  .shortcut-key {
+    font-size: 10px;
+  }
+
+  .shortcut-desc {
+    font-size: 11px;
   }
 }

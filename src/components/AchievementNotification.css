@@ -113,10 +113,139 @@
 
 @media (max-width: 768px) {
   .achievement-notification {
-    top: 16px;
-    right: 16px;
-    left: 16px;
+    top: 90px;
+    right: 12px;
+    left: 12px;
     min-width: auto;
+    max-width: none;
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .achievement-header {
+    margin-bottom: 10px;
+  }
+
+  .achievement-badge {
+    font-size: 18px;
+  }
+
+  .achievement-label {
+    font-size: 12px;
+  }
+
+  .achievement-icon {
+    font-size: 36px;
+  }
+
+  .achievement-title {
+    font-size: 15px;
+  }
+
+  .achievement-description {
+    font-size: 12px;
+  }
+
+  .achievement-close {
+    top: 10px;
+    right: 10px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 640px) {
+  .achievement-notification {
+    top: 85px;
+    padding: 16px;
+  }
+
+  .achievement-icon {
+    font-size: 34px;
+  }
+
+  .achievement-title {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .achievement-notification {
+    top: 80px;
+    right: 10px;
+    left: 10px;
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .achievement-header {
+    margin-bottom: 8px;
+  }
+
+  .achievement-badge {
+    font-size: 16px;
+  }
+
+  .achievement-label {
+    font-size: 11px;
+    letter-spacing: 0.8px;
+  }
+
+  .achievement-details {
+    gap: 10px;
+  }
+
+  .achievement-icon {
+    font-size: 32px;
+  }
+
+  .achievement-title {
+    font-size: 14px;
+    margin-bottom: 3px;
+  }
+
+  .achievement-description {
+    font-size: 11px;
+  }
+
+  .achievement-close {
+    top: 9px;
+    right: 9px;
+    font-size: 20px;
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@media (max-width: 380px) {
+  .achievement-notification {
+    top: 75px;
+    padding: 12px;
+  }
+
+  .achievement-badge {
+    font-size: 15px;
+  }
+
+  .achievement-label {
+    font-size: 10px;
+  }
+
+  .achievement-icon {
+    font-size: 30px;
+  }
+
+  .achievement-title {
+    font-size: 13px;
+  }
+
+  .achievement-description {
+    font-size: 10px;
+  }
+
+  .achievement-close {
+    font-size: 18px;
+    width: 20px;
+    height: 20px;
   }
 }
 
