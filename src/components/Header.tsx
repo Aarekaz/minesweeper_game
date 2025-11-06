@@ -6,18 +6,32 @@ interface HeaderProps {
   time: number;
   remainingMines: number;
   gameStatus: GameStatus;
+  isPaused?: boolean;
+  canUndo?: boolean;
   onReset: () => void;
   onDifficultyChange: () => void;
   onStatsClick: () => void;
+  onAchievementsClick: () => void;
+  onDailyChallengeClick: () => void;
+  onSettingsClick: () => void;
+  onPauseClick?: () => void;
+  onUndo?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
   time,
   remainingMines,
   gameStatus,
+  isPaused = false,
+  canUndo = false,
   onReset,
   onDifficultyChange,
   onStatsClick,
+  onAchievementsClick,
+  onDailyChallengeClick,
+  onSettingsClick,
+  onPauseClick,
+  onUndo,
 }) => {
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -69,9 +83,34 @@ const Header: React.FC<HeaderProps> = ({
         <button className="icon-button" onClick={onStatsClick} title="Statistics">
           📊
         </button>
+        <button className="icon-button" onClick={onAchievementsClick} title="Achievements">
+          🏆
+        </button>
+        <button className="icon-button" onClick={onDailyChallengeClick} title="Daily Challenge">
+          📅
+        </button>
         <button className="icon-button" onClick={onDifficultyChange} title="Change Difficulty">
+          🎚️
+        </button>
+        <button className="icon-button" onClick={onSettingsClick} title="Settings">
           ⚙️
         </button>
+        {gameStatus === 'playing' && onPauseClick && (
+          <button className="icon-button" onClick={onPauseClick} title={isPaused ? "Resume (P)" : "Pause (P)"}>
+            {isPaused ? '▶️' : '⏸️'}
+          </button>
+        )}
+        {gameStatus === 'playing' && onUndo && (
+          <button
+            className="icon-button"
+            onClick={onUndo}
+            disabled={!canUndo}
+            title="Undo (Ctrl+Z)"
+            style={{ opacity: canUndo ? 1 : 0.3, cursor: canUndo ? 'pointer' : 'not-allowed' }}
+          >
+            ↩️
+          </button>
+        )}
       </div>
 
       <div className="header-stats">

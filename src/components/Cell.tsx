@@ -8,6 +8,7 @@ interface CellProps {
   onRightClick: () => void;
   onMiddleClick: () => void;
   gameOver: boolean;
+  isSelected?: boolean;
 }
 
 const Cell: React.FC<CellProps> = ({
@@ -16,6 +17,7 @@ const Cell: React.FC<CellProps> = ({
   onRightClick,
   onMiddleClick,
   gameOver,
+  isSelected = false,
 }) => {
   const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; color: string }>>([]);
   const [justRevealed, setJustRevealed] = useState(false);
@@ -150,6 +152,10 @@ const Cell: React.FC<CellProps> = ({
       classes.push('cell-exploding');
     }
 
+    if (isSelected) {
+      classes.push('cell-selected');
+    }
+
     return classes.join(' ');
   };
 
@@ -181,4 +187,13 @@ const Cell: React.FC<CellProps> = ({
   );
 };
 
-export default Cell;
+// Memoize to prevent unnecessary re-renders of unchanged cells
+export default React.memo(Cell, (prevProps, nextProps) => {
+  return (
+    prevProps.cell.state === nextProps.cell.state &&
+    prevProps.cell.isMine === nextProps.cell.isMine &&
+    prevProps.cell.neighborMines === nextProps.cell.neighborMines &&
+    prevProps.gameOver === nextProps.gameOver &&
+    prevProps.isSelected === nextProps.isSelected
+  );
+});
