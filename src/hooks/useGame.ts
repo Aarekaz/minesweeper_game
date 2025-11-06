@@ -52,8 +52,9 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
     // or if mines count changed (important for custom difficulty)
     const currentRows = board.length;
     const currentCols = board[0]?.length || 0;
+    const currentMines = board.flat().filter(cell => cell.isMine).length;
 
-    if (currentRows !== config.rows || currentCols !== config.cols) {
+    if (currentRows !== config.rows || currentCols !== config.cols || (minesPlaced && currentMines !== config.mines)) {
       setBoard(createBoard(config));
       setGameStatus('idle');
       setMinesPlaced(false);
@@ -71,7 +72,7 @@ export function useGame(config: GameConfig, difficulty: Difficulty, options?: Us
         comboTimerRef.current = null;
       }
     }
-  }, [config.rows, config.cols]);
+  }, [config.rows, config.cols, config.mines, minesPlaced]);
 
   const togglePause = useCallback(() => {
     if (gameStatus === 'playing') {
