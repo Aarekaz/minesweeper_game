@@ -14,6 +14,7 @@
   justify-content: center;
   overflow: hidden;
   padding: 0;
+  position: relative;
 }
 
 .app-container {
@@ -310,15 +311,46 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .app {
-    padding: 16px;
+    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .app-container {
-    gap: 16px;
+    gap: 0;
+    padding-top: 140px;
+    padding-bottom: 60px;
+    min-height: 100vh;
   }
 
   .game-message {
-    padding: 32px 48px;
+    padding: 28px 40px;
+    max-width: calc(100vw - 32px);
+  }
+
+  .message-text h2 {
+    font-size: 26px;
+  }
+
+  .message-text p {
+    font-size: 14px;
+  }
+
+  .continue-button {
+    padding: 12px 28px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-container {
+    padding-top: 130px;
+    padding-bottom: 50px;
+  }
+
+  .game-message {
+    padding: 24px 32px;
+    max-width: calc(100vw - 24px);
   }
 
   .message-text h2 {
@@ -326,29 +358,74 @@
   }
 
   .message-text p {
-    font-size: 14px;
+    font-size: 13px;
   }
 }
 
 @media (max-width: 480px) {
   .app {
-    padding: 12px;
+    padding: 0;
   }
 
   .app-container {
-    gap: 12px;
+    gap: 0;
+    padding-top: 120px;
+    padding-bottom: 45px;
   }
 
   .game-message {
-    padding: 24px 32px;
+    padding: 20px 24px;
+    max-width: calc(100vw - 20px);
+    border-radius: 16px;
+  }
+
+  .message-text h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .message-text p {
+    font-size: 12px;
+  }
+
+  .combo-stat {
+    font-size: 15px !important;
+  }
+
+  .continue-button {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+
+  .continue-buttons {
+    gap: 8px;
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .app-container {
+    padding-top: 110px;
+    padding-bottom: 40px;
+  }
+
+  .game-message {
+    padding: 18px 20px;
+    max-width: calc(100vw - 16px);
   }
 
   .message-text h2 {
     font-size: 20px;
+    margin-bottom: 6px;
   }
 
   .message-text p {
-    font-size: 13px;
+    font-size: 11px;
+  }
+
+  .continue-button {
+    padding: 9px 18px;
+    font-size: 12px;
   }
 }
 
@@ -531,4 +608,29 @@
 .tembo-attribution:active {
   transform: translateX(-50%) translateY(0) scale(0.98);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  .tembo-attribution {
+    bottom: 12px;
+    font-size: 11px;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tembo-attribution {
+    bottom: 10px;
+    font-size: 10px;
+    padding: 7px 14px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .tembo-attribution {
+    bottom: 8px;
+    font-size: 9px;
+    padding: 6px 12px;
+  }
 }

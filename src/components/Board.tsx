@@ -50,13 +50,31 @@ const Board: React.FC<BoardProps> = ({
 
   // Calculate optimal cell size to fill screen while maintaining square cells
   const boardDimensions = useMemo(() => {
-    const headerHeight = 120; // Space for floating header + margin
-    const padding = 40; // Minimal padding around board
+    const isMobile = windowSize.width <= 768;
+    const isSmallMobile = windowSize.width <= 480;
+    const isTinyMobile = windowSize.width <= 380;
+
+    // Responsive header height calculation
+    let headerHeight = 120;
+    if (isTinyMobile) {
+      headerHeight = 110;
+    } else if (isSmallMobile) {
+      headerHeight = 120;
+    } else if (isMobile) {
+      headerHeight = 140;
+    }
+
+    // Responsive padding
+    const padding = isTinyMobile ? 16 : isSmallMobile ? 20 : isMobile ? 24 : 40;
+
     const availableHeight = windowSize.height - headerHeight - padding;
     const availableWidth = windowSize.width - padding;
 
     // Calculate cell size based on available space, accounting for grid gaps
-    const gapSize = 2; // Must match CSS gap value
+    let gapSize = 2; // Must match CSS gap value
+    if (isSmallMobile) gapSize = 1;
+    if (isMobile && !isSmallMobile) gapSize = 1.5;
+
     const totalGapHeight = (rows - 1) * gapSize;
     const totalGapWidth = (cols - 1) * gapSize;
 
@@ -64,8 +82,9 @@ const Board: React.FC<BoardProps> = ({
     const cellSizeByWidth = (availableWidth - totalGapWidth) / cols;
 
     // Use the smaller dimension to ensure board fits
-    const cellSize = Math.min(cellSizeByHeight, cellSizeByWidth, 56); // Max 56px per cell
-    const minCellSize = 24; // Minimum 24px per cell
+    const maxCellSize = isMobile ? 48 : 56;
+    const cellSize = Math.min(cellSizeByHeight, cellSizeByWidth, maxCellSize);
+    const minCellSize = isTinyMobile ? 20 : isSmallMobile ? 22 : 24;
 
     const finalCellSize = Math.max(minCellSize, Math.floor(cellSize));
 
